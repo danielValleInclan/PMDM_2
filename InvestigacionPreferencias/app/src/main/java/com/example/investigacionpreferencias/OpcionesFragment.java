@@ -1,9 +1,9 @@
 package com.example.investigacionpreferencias;
 
 import android.os.Bundle;
-import android.preference.PreferenceFragment;
+import android.preference.PreferenceActivity;
 
-public class OpcionesFragment extends PreferenceFragment {
+public class OpcionesFragment extends PreferenceActivity {
     @Override
     public void onCreate(Bundle savedInstance){
         super.onCreate(savedInstance);
