@@ -10,13 +10,8 @@
     android:orientation="vertical"
     tools:context=".MainActivity" >
 
-    <Button android:id="@+id/BtnGuardar"
+    <Button android:id="@+id/BtnPreferencias"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/guardar" />
-
-    <Button android:id="@+id/BtnCargar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/cargar" />
 </LinearLayout>

@@ -2,23 +2,15 @@ package com.example.investigacionpreferencias;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.util.Log;
-import android.view.Menu;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.os.Bundle;
 import android.widget.Button;
 
 public class MainActivity extends Activity {
 
-    private Button btnGuardar;
-    private Button btnCargar;
+    private Button btnPreferencias;
 
 
     @Override
@@ -26,43 +18,17 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        btnGuardar = (Button)findViewById(R.id.BtnGuardar);
-        btnCargar = (Button)findViewById(R.id.BtnCargar);
+        getFragmentManager().beginTransaction()
+                .replace(android.R.id.content, new OpcionesFragment())
+                .commit();
 
-        btnGuardar.setOnClickListener(new OnClickListener() {
+        btnPreferencias = findViewById(R.id.BtnPreferencias);
+
+        btnPreferencias.setOnClickListener(new View.OnClickListener() {
+            @Override
             public void onClick(View v) {
-                //Guardamos las preferencias
-                SharedPreferences prefs =
-                        getSharedPreferences("MisPreferencias", Context.MODE_PRIVATE);
-
-                SharedPreferences.Editor editor = prefs.edit();
-                editor.putString("email", "modificado@email.com");
-                editor.putString("nombre", "Prueba");
-                editor.commit();
+                startActivity(new Intent(MainActivity.this, OpcionesFragment.class));
             }
         });
-
-        btnCargar.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-                //Recuperamos las preferencias
-                SharedPreferences prefs =
-                        getSharedPreferences("MisPreferencias", Context.MODE_PRIVATE);
-
-                String correo = prefs.getString("email", "por_defecto@email.com");
-                String nombre = prefs.getString("nombre", "nombre_por_defecto");
-                String otra = prefs.getString("otra", "otra_por_defecto");
-
-                Log.i("Preferences", "Correo: " + correo);
-                Log.i("Preferences", "Nombre: " + nombre);
-                Log.i("Preferences", "Otra: " + otra);
-            }
-        });
-
-    }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
     }
 }
