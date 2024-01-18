@@ -1,4 +1,4 @@
-package com.example.mislugares;
+package com.example.mislugares.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
