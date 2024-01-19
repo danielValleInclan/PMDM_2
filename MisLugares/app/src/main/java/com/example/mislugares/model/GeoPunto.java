@@ -1,5 +1,6 @@
 package com.example.mislugares.model;
 
+import android.graphics.Bitmap;
 import android.media.Image;
 
 import java.net.URL;
@@ -8,7 +9,7 @@ import java.util.Date;
 
 public class GeoPunto {
     private double longitud, latitud, valoracion;
-    private Image imagen;
+    private Bitmap imagen;
     private URL url;
     private String comentario;
     private Date fecha;
@@ -17,7 +18,14 @@ public class GeoPunto {
     public GeoPunto() {
     }
 
-    public GeoPunto(double longitud, double latitud, double valoracion, Image imagen, URL url, String comentario, Date fecha, TipoLugar tipoLugar) {
+    public GeoPunto(double longitud,
+                    double latitud,
+                    double valoracion,
+                    Bitmap imagen,
+                    URL url,
+                    String comentario,
+                    Date fecha,
+                    TipoLugar tipoLugar) {
         this.longitud = longitud;
         this.latitud = latitud;
         this.valoracion = valoracion;
@@ -52,11 +60,11 @@ public class GeoPunto {
         this.valoracion = valoracion;
     }
 
-    public Image getImagen() {
+    public Bitmap getImagen() {
         return imagen;
     }
 
-    public void setImagen(Image imagen) {
+    public void setImagen(Bitmap imagen) {
         this.imagen = imagen;
     }
 
