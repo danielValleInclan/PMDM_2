@@ -5,15 +5,6 @@ import android.media.Image;
 import java.net.URL;
 import java.util.Date;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 
 public class GeoPunto {
     private double longitud, latitud, valoracion;
@@ -22,4 +13,71 @@ public class GeoPunto {
     private String comentario;
     private Date fecha;
     private TipoLugar tipoLugar;
+
+    public GeoPunto() {
+    }
+
+    public double getLongitud() {
+        return longitud;
+    }
+
+    public void setLongitud(double longitud) {
+        this.longitud = longitud;
+    }
+
+    public double getLatitud() {
+        return latitud;
+    }
+
+    public void setLatitud(double latitud) {
+        this.latitud = latitud;
+    }
+
+    public double getValoracion() {
+        return valoracion;
+    }
+
+    public void setValoracion(double valoracion) {
+        this.valoracion = valoracion;
+    }
+
+    public Image getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(Image imagen) {
+        this.imagen = imagen;
+    }
+
+    public URL getUrl() {
+        return url;
+    }
+
+    public void setUrl(URL url) {
+        this.url = url;
+    }
+
+    public String getComentario() {
+        return comentario;
+    }
+
+    public void setComentario(String comentario) {
+        this.comentario = comentario;
+    }
+
+    public Date getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
+    }
+
+    public TipoLugar getTipoLugar() {
+        return tipoLugar;
+    }
+
+    public void setTipoLugar(TipoLugar tipoLugar) {
+        this.tipoLugar = tipoLugar;
+    }
 }

@@ -1,5 +1,6 @@
 package com.example.mislugares.repository.impl;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -66,6 +67,7 @@ public class ListaLugares implements LugaresRepository {
 
 
 
+    @SuppressLint("Range")
     @Override
     public List<Lugar> getAllLugares() {
         List<Lugar> lugares = new ArrayList<>();
