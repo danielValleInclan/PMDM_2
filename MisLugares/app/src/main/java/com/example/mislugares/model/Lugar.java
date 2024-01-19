@@ -9,6 +9,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Lugar {
+    private long id;
     private String nombre, direccion;
     private GeoPunto geoPunto;
 }
