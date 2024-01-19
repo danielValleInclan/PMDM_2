@@ -17,6 +17,17 @@ public class GeoPunto {
     public GeoPunto() {
     }
 
+    public GeoPunto(double longitud, double latitud, double valoracion, Image imagen, URL url, String comentario, Date fecha, TipoLugar tipoLugar) {
+        this.longitud = longitud;
+        this.latitud = latitud;
+        this.valoracion = valoracion;
+        this.imagen = imagen;
+        this.url = url;
+        this.comentario = comentario;
+        this.fecha = fecha;
+        this.tipoLugar = tipoLugar;
+    }
+
     public double getLongitud() {
         return longitud;
     }

@@ -9,8 +9,7 @@ public class Lugar {
     public Lugar() {
     }
 
-    public Lugar(long id, String nombre, String direccion, GeoPunto geoPunto) {
-        this.id = id;
+    public Lugar(String nombre, String direccion, GeoPunto geoPunto) {
         this.nombre = nombre;
         this.direccion = direccion;
         this.geoPunto = geoPunto;
