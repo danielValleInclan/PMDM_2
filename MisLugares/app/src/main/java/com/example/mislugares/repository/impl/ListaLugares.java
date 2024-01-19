@@ -143,7 +143,7 @@ public class ListaLugares implements LugaresRepository {
         values.put(COLUMN_LONGITUD, lugar.getGeoPunto().getLongitud());
         values.put(COLUMN_VALORACION, lugar.getGeoPunto().getValoracion());
         values.put(COLUMN_COMENTARIO, lugar.getGeoPunto().getComentario());
-        values.put(COLUMN_TIPO_LUGAR, lugar.getGeoPunto().getTipoLugar().ordinal());
+        values.put(COLUMN_TIPO_LUGAR, lugar.getGeoPunto().getTipoLugar());
         values.put(COLUMN_IMAGEN, lugar.getGeoPunto().getImagen().toString());
         values.put(COLUMN_URL, String.valueOf(lugar.getGeoPunto().getUrl()));
 

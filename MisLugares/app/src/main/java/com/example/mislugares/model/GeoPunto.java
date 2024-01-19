@@ -84,8 +84,8 @@ public class GeoPunto {
         this.fecha = fecha;
     }
 
-    public TipoLugar getTipoLugar() {
-        return tipoLugar;
+    public String getTipoLugar() {
+        return tipoLugar.toString();
     }
 
     public void setTipoLugar(TipoLugar tipoLugar) {
