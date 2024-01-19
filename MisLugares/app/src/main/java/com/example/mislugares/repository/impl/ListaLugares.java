@@ -1,6 +1,7 @@
 package com.example.mislugares.repository.impl;
 
 import android.annotation.SuppressLint;
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -8,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.example.mislugares.model.GeoPunto;
 import com.example.mislugares.model.Lugar;
+import com.example.mislugares.model.TipoLugar;
 import com.example.mislugares.repository.LugaresRepository;
 
 import java.util.ArrayList;
@@ -96,26 +98,86 @@ public class ListaLugares implements LugaresRepository {
         return lugares;
     }
 
+    @SuppressLint("Range")
     @Override
-    public Lugar getLugarById() {
-        return null;
+    public Lugar getLugarById(long id) {
+
+        Lugar lugar = null;
+
+        Cursor cursor = database.query(
+                "tu_tabla_de_lugares",
+                null,  // Selecciona todas las columnas
+                "_id = ?",
+                new String[]{String.valueOf(id)},
+                null,
+                null,
+                null
+        );
+
+        if (cursor != null && cursor.moveToFirst()) {
+            lugar = new Lugar(
+                    cursor.getLong(cursor.getColumnIndex(COLUMN_ID)),
+                    cursor.getString(cursor.getColumnIndex(COLUMN_NOMBRE)),
+                    cursor.getString(cursor.getColumnIndex(COLUMN_DIRECCION)),
+                    cursor.getDouble(cursor.getColumnIndex(COLUMN_LATITUD)),
+                    cursor.getDouble(cursor.getColumnIndex(COLUMN_LONGITUD)),
+                    cursor.getDouble(cursor.getColumnIndex(COLUMN_VALORACION)),
+                    cursor.getString(cursor.getColumnIndex(COLUMN_COMENTARIO)),
+                    cursor.getString(cursor.getColumnIndex(COLUMN_TIPO_LUGAR)),
+                    cursor.getString(cursor.getColumnIndex(COLUMN_IMAGEN)),
+                    cursor.getString(cursor.getColumnIndex(COLUMN_URL))
+            );
+            cursor.close();
+        }
+
+        return lugar;
     }
 
     @Override
     public void addLugar(Lugar lugar) {
+
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_NOMBRE, lugar.getNombre());
+        values.put(COLUMN_DIRECCION, lugar.getDireccion());
+        values.put(COLUMN_LATITUD, lugar.getGeoPunto().getLatitud());
+        values.put(COLUMN_LONGITUD, lugar.getGeoPunto().getLongitud());
+        values.put(COLUMN_VALORACION, lugar.getGeoPunto().getValoracion());
+        values.put(COLUMN_COMENTARIO, lugar.getGeoPunto().getComentario());
+        values.put(COLUMN_TIPO_LUGAR, lugar.getGeoPunto().getTipoLugar().ordinal());
+        values.put(COLUMN_IMAGEN, lugar.getGeoPunto().getImagen().toString());
+        values.put(COLUMN_URL, String.valueOf(lugar.getGeoPunto().getUrl()));
+
+        database.insert(TABLE_LUGARES, null, values);
 
     }
 
     @Override
     public void updateLugar(Lugar lugar) {
 
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_NOMBRE, lugar.getNombre());
+        values.put(COLUMN_DIRECCION, lugar.getDireccion());
+        values.put(COLUMN_LATITUD, lugar.getGeoPunto().getLatitud());
+        values.put(COLUMN_LONGITUD, lugar.getGeoPunto().getLongitud());
+        values.put(COLUMN_VALORACION, lugar.getGeoPunto().getValoracion());
+        // Configura otras columnas según tu modelo
+
+        String whereClause = COLUMN_ID + " = ?";
+        String[] whereArgs = {String.valueOf(lugar.getId())};
+
+        database.update(TABLE_LUGARES, values, whereClause, whereArgs);
+
     }
 
     @Override
     public void deleteLugar(int id) {
+        String whereClause = COLUMN_ID + " = ?";
+        String[] whereArgs = {String.valueOf(id)};
 
+        database.delete(TABLE_LUGARES, whereClause, whereArgs);
     }
 
-    // Nombre de las tablas y columnas
-
+    public void close() {
+        dbHelper.close();
+    }
 }

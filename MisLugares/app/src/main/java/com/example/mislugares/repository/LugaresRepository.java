@@ -7,7 +7,7 @@ import java.util.List;
 public interface LugaresRepository {
 
     List<Lugar> getAllLugares();
-    Lugar getLugarById();
+    Lugar getLugarById(long id);
     void addLugar(Lugar lugar);
     void updateLugar(Lugar lugar);
     void deleteLugar(int id);

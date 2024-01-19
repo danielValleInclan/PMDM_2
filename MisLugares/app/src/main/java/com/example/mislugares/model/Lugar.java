@@ -15,6 +15,9 @@ public class Lugar {
         this.geoPunto = geoPunto;
     }
 
+    public Lugar(long aLong, String string, String string1, double aDouble, double aDouble1, double aDouble2, String string2, String string3, String string4, String string5) {
+    }
+
     public long getId() {
         return id;
     }
