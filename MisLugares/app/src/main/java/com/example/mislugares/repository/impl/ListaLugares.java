@@ -12,6 +12,8 @@ import com.example.mislugares.model.Lugar;
 import com.example.mislugares.model.TipoLugar;
 import com.example.mislugares.repository.LugaresRepository;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -72,7 +74,7 @@ public class ListaLugares implements LugaresRepository {
 
     @SuppressLint("Range")
     @Override
-    public List<Lugar> getAllLugares() {
+    public List<Lugar> getAllLugares() throws MalformedURLException {
         List<Lugar> lugares = new ArrayList<>();
         Cursor cursor = database.query(TABLE_LUGARES, null, null, null, null, null, null);
 
@@ -82,11 +84,15 @@ public class ListaLugares implements LugaresRepository {
                 lugar.setId(cursor.getLong(cursor.getColumnIndex(COLUMN_ID)));
                 lugar.setNombre(cursor.getString(cursor.getColumnIndex(COLUMN_NOMBRE)));
                 lugar.setDireccion(cursor.getString(cursor.getColumnIndex(COLUMN_DIRECCION)));
+                lugar.setComentario(cursor.getString(cursor.getColumnIndex(COLUMN_COMENTARIO)));
+                lugar.setValoracion(cursor.getDouble(cursor.getColumnIndex(COLUMN_VALORACION)));
+                lugar.setUrl(new URL(cursor.getString(cursor.getColumnIndex(COLUMN_URL))));
+                lugar.setTipoLugar(TipoLugar.valueOf(cursor.getString(cursor.getColumnIndex(COLUMN_TIPO_LUGAR))));
 
                 GeoPunto geoPunto = new GeoPunto();
                 geoPunto.setLatitud(cursor.getDouble(cursor.getColumnIndex(COLUMN_LATITUD)));
                 geoPunto.setLongitud(cursor.getDouble(cursor.getColumnIndex(COLUMN_LONGITUD)));
-                lugar.setValoracion(cursor.getDouble(cursor.getColumnIndex(COLUMN_VALORACION)));
+
                 // Configurar otros atributos de GeoPunto según tu modelo
 
                 lugar.setGeoPunto(geoPunto);
@@ -101,7 +107,7 @@ public class ListaLugares implements LugaresRepository {
 
     @SuppressLint("Range")
     @Override
-    public Lugar getLugarById(long id) {
+    public Lugar getLugarById(long id) throws MalformedURLException {
         Lugar lugar = null;
         Cursor cursor = database.query(
                 TABLE_LUGARES,
@@ -122,7 +128,7 @@ public class ListaLugares implements LugaresRepository {
                     new GeoPunto(cursor.getDouble(cursor.getColumnIndex(COLUMN_LATITUD)),
                             cursor.getDouble(cursor.getColumnIndex(COLUMN_LONGITUD))),
                     cursor.getDouble(cursor.getColumnIndex(COLUMN_VALORACION)),
-                    null,  // Aquí debes manejar la carga de la imagen según tu lógica
+                    new URL(cursor.getString(cursor.getColumnIndex(COLUMN_URL))),
                     new Date(cursor.getLong(cursor.getColumnIndex(COLUMN_FECHA))),
                     TipoLugar.valueOf(cursor.getString(cursor.getColumnIndex(COLUMN_TIPO_LUGAR))),
                     cursor.getInt(cursor.getColumnIndex(COLUMN_IMAGEN))
@@ -146,6 +152,7 @@ public class ListaLugares implements LugaresRepository {
         values.put(COLUMN_TIPO_LUGAR, lugar.getTipoLugar());
         values.put(COLUMN_IMAGEN, lugar.getImagen());
         values.put(COLUMN_URL, String.valueOf(lugar.getUrl()));
+        values.put(COLUMN_FECHA, lugar.getFecha().getTime());
 
         database.insert(TABLE_LUGARES, null, values);
 
@@ -157,10 +164,13 @@ public class ListaLugares implements LugaresRepository {
         ContentValues values = new ContentValues();
         values.put(COLUMN_NOMBRE, lugar.getNombre());
         values.put(COLUMN_DIRECCION, lugar.getDireccion());
+        values.put(COLUMN_COMENTARIO, lugar.getComentario());
         values.put(COLUMN_LATITUD, lugar.getGeoPunto().getLatitud());
         values.put(COLUMN_LONGITUD, lugar.getGeoPunto().getLongitud());
         values.put(COLUMN_VALORACION, lugar.getValoracion());
-        // Configura otras columnas según tu modelo
+        values.put(COLUMN_URL, lugar.getUrl().toString());
+        values.put(COLUMN_TIPO_LUGAR, lugar.getTipoLugar());
+        values.put(COLUMN_IMAGEN, lugar.getImagen());
 
         String whereClause = COLUMN_ID + " = ?";
         String[] whereArgs = {String.valueOf(lugar.getId())};
