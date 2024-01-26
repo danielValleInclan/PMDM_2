@@ -13,6 +13,7 @@ import com.example.mislugares.model.TipoLugar;
 import com.example.mislugares.repository.LugaresRepository;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ListaLugares implements LugaresRepository {
@@ -85,7 +86,7 @@ public class ListaLugares implements LugaresRepository {
                 GeoPunto geoPunto = new GeoPunto();
                 geoPunto.setLatitud(cursor.getDouble(cursor.getColumnIndex(COLUMN_LATITUD)));
                 geoPunto.setLongitud(cursor.getDouble(cursor.getColumnIndex(COLUMN_LONGITUD)));
-                geoPunto.setValoracion(cursor.getDouble(cursor.getColumnIndex(COLUMN_VALORACION)));
+                lugar.setValoracion(cursor.getDouble(cursor.getColumnIndex(COLUMN_VALORACION)));
                 // Configurar otros atributos de GeoPunto según tu modelo
 
                 lugar.setGeoPunto(geoPunto);
@@ -101,13 +102,11 @@ public class ListaLugares implements LugaresRepository {
     @SuppressLint("Range")
     @Override
     public Lugar getLugarById(long id) {
-
         Lugar lugar = null;
-
         Cursor cursor = database.query(
-                "tu_tabla_de_lugares",
+                TABLE_LUGARES,
                 null,  // Selecciona todas las columnas
-                "_id = ?",
+                COLUMN_ID + " = ?",
                 new String[]{String.valueOf(id)},
                 null,
                 null,
@@ -119,13 +118,14 @@ public class ListaLugares implements LugaresRepository {
                     cursor.getLong(cursor.getColumnIndex(COLUMN_ID)),
                     cursor.getString(cursor.getColumnIndex(COLUMN_NOMBRE)),
                     cursor.getString(cursor.getColumnIndex(COLUMN_DIRECCION)),
-                    cursor.getDouble(cursor.getColumnIndex(COLUMN_LATITUD)),
-                    cursor.getDouble(cursor.getColumnIndex(COLUMN_LONGITUD)),
-                    cursor.getDouble(cursor.getColumnIndex(COLUMN_VALORACION)),
                     cursor.getString(cursor.getColumnIndex(COLUMN_COMENTARIO)),
-                    cursor.getString(cursor.getColumnIndex(COLUMN_TIPO_LUGAR)),
-                    cursor.getString(cursor.getColumnIndex(COLUMN_IMAGEN)),
-                    cursor.getString(cursor.getColumnIndex(COLUMN_URL))
+                    new GeoPunto(cursor.getDouble(cursor.getColumnIndex(COLUMN_LATITUD)),
+                            cursor.getDouble(cursor.getColumnIndex(COLUMN_LONGITUD))),
+                    cursor.getDouble(cursor.getColumnIndex(COLUMN_VALORACION)),
+                    null,  // Aquí debes manejar la carga de la imagen según tu lógica
+                    new Date(cursor.getLong(cursor.getColumnIndex(COLUMN_FECHA))),
+                    TipoLugar.valueOf(cursor.getString(cursor.getColumnIndex(COLUMN_TIPO_LUGAR))),
+                    cursor.getInt(cursor.getColumnIndex(COLUMN_IMAGEN))
             );
             cursor.close();
         }
@@ -141,11 +141,11 @@ public class ListaLugares implements LugaresRepository {
         values.put(COLUMN_DIRECCION, lugar.getDireccion());
         values.put(COLUMN_LATITUD, lugar.getGeoPunto().getLatitud());
         values.put(COLUMN_LONGITUD, lugar.getGeoPunto().getLongitud());
-        values.put(COLUMN_VALORACION, lugar.getGeoPunto().getValoracion());
-        values.put(COLUMN_COMENTARIO, lugar.getGeoPunto().getComentario());
-        values.put(COLUMN_TIPO_LUGAR, lugar.getGeoPunto().getTipoLugar());
-        values.put(COLUMN_IMAGEN, lugar.getGeoPunto().getImagen().toString());
-        values.put(COLUMN_URL, String.valueOf(lugar.getGeoPunto().getUrl()));
+        values.put(COLUMN_VALORACION, lugar.getValoracion());
+        values.put(COLUMN_COMENTARIO, lugar.getComentario());
+        values.put(COLUMN_TIPO_LUGAR, lugar.getTipoLugar());
+        values.put(COLUMN_IMAGEN, lugar.getImagen());
+        values.put(COLUMN_URL, String.valueOf(lugar.getUrl()));
 
         database.insert(TABLE_LUGARES, null, values);
 
@@ -159,7 +159,7 @@ public class ListaLugares implements LugaresRepository {
         values.put(COLUMN_DIRECCION, lugar.getDireccion());
         values.put(COLUMN_LATITUD, lugar.getGeoPunto().getLatitud());
         values.put(COLUMN_LONGITUD, lugar.getGeoPunto().getLongitud());
-        values.put(COLUMN_VALORACION, lugar.getGeoPunto().getValoracion());
+        values.put(COLUMN_VALORACION, lugar.getValoracion());
         // Configura otras columnas según tu modelo
 
         String whereClause = COLUMN_ID + " = ?";
