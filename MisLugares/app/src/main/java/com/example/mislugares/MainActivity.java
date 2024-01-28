@@ -2,27 +2,22 @@ package com.example.mislugares;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 
 import com.example.mislugares.model.GeoPunto;
 import com.example.mislugares.model.Lugar;
 import com.example.mislugares.model.TipoLugar;
-import com.example.mislugares.repository.impl.ListaLugares;
+import com.example.mislugares.repository.impl.LugaresImpl;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.time.Instant;
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ListaLugares listaLugares;
+    private LugaresImpl lugaresImpl;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         Date date = new Date(122, 0, 26);
         GeoPunto geoPunto1 = new GeoPunto(13.0, 13.0);
 
-        Lugar lugar1 = new Lugar(1,
+        Lugar lugar1 = new Lugar(
                 "España",
                 "arriba",
                 "Mu bonito",
@@ -50,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
                 TipoLugar.MUSEO,
                 image);
 
-        Lugar lugar2 = new Lugar(2,
+        Lugar lugar2 = new Lugar(
                 "Croacia",
                 "derecha",
                 "Mu bonito",
@@ -61,20 +56,74 @@ public class MainActivity extends AppCompatActivity {
                 TipoLugar.BAR,
                 image);
 
-        listaLugares = new ListaLugares(this);
+        lugaresImpl = new LugaresImpl(this);
 
-        listaLugares.addLugar(lugar1);
-        listaLugares.addLugar(lugar2);
-
-        List<Lugar> lugars = null;
+        // Obtener la lista de lugares antes de borrar
+        List<Lugar> lugarsBefore = null;
         try {
-            lugars = listaLugares.getAllLugares();
+            lugarsBefore = lugaresImpl.getAllLugares();
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
-        for (Lugar lugar : lugars){
+
+        // Limpiar la base de datos
+        for (Lugar l : lugarsBefore){
+            lugaresImpl.deleteLugar((int) l.getId());
+        }
+
+        // Obtener la lista de lugares después de borrar
+        List<Lugar> lugarsAfter = null;
+        try {
+            lugarsAfter = lugaresImpl.getAllLugares();
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+
+        // Imprimir la información de los lugares después de borrar
+        for (Lugar lugar : lugarsAfter){
+            Log.d("DB_TEST", "Lugar después de borrar: " + lugar.getNombre());
+        }
+
+        lugaresImpl.addLugar(lugar1);
+        lugaresImpl.addLugar(lugar2);
+
+        try {
+            lugarsAfter = lugaresImpl.getAllLugares();
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+
+        int lastId = 0;
+
+        for (Lugar lugar : lugarsAfter){
             Log.d("DB_TEST",
-                    "Lugar: " + lugar.getNombre()
+                    "Id: " + lugar.getId() +
+                    " \nLugar: " + lugar.getNombre()
+                            + ", \nDirección " + lugar.getDireccion()
+                            + ", \nComentario " + lugar.getComentario()
+                            + ", \nLatitud " + lugar.getGeoPunto().getLatitud()
+                            + ", \nLongitud " + lugar.getGeoPunto().getLongitud()
+                            + ", \nValoración " + lugar.getValoracion()
+                            + ", \nURL " + lugar.getUrl()
+                            + " \nFecha " + lugar.getFecha()
+                            + " \nTipo Lugar " + lugar.getTipoLugar()
+                            + ", \nImagen: " + lugar.getImagen());
+            lastId = lugar.getId();
+        }
+
+        lugar1.setId(lastId);
+        lugaresImpl.updateLugar(lugar1);
+
+        try {
+            lugarsAfter = lugaresImpl.getAllLugares();
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+
+        for (Lugar lugar : lugarsAfter){
+            Log.d("DB_TEST",
+                    "Id: " + lugar.getId() +
+                            " \nLugar: " + lugar.getNombre()
                             + ", \nDirección " + lugar.getDireccion()
                             + ", \nComentario " + lugar.getComentario()
                             + ", \nLatitud " + lugar.getGeoPunto().getLatitud()
@@ -86,22 +135,6 @@ public class MainActivity extends AppCompatActivity {
                             + ", \nImagen: " + lugar.getImagen());
         }
 
-        listaLugares.deleteLugar(2);
-
-        for (Lugar lugar : lugars){
-            Log.d("DB_TEST",
-                    "Lugar: " + lugar.getNombre()
-                            + ", \nDirección " + lugar.getDireccion()
-                            + ", \nComentario " + lugar.getComentario()
-                            + ", \nLatitud " + lugar.getGeoPunto().getLatitud()
-                            + ", \nLongitud " + lugar.getGeoPunto().getLongitud()
-                            + ", \nValoración " + lugar.getValoracion()
-                            + ", \nURL " + lugar.getUrl()
-                            + " \nFecha " + lugar.getFecha()
-                            + " \nTipo Lugar " + lugar.getTipoLugar()
-                            + ", \nImagen: " + lugar.getImagen());
-        }
-
-        listaLugares.close();
+        lugaresImpl.close();
     }
 }
