@@ -8,7 +8,7 @@ import java.net.URL;
 import java.util.Date;
 
 public class Lugar {
-    private long id;
+    private int id;
     private String nombre, direccion, comentario;
     private GeoPunto geoPunto;
 
@@ -25,7 +25,7 @@ public class Lugar {
     public Lugar() {
     }
 
-    public Lugar(long id,
+    public Lugar(
                  String nombre,
                  String direccion,
                  String comentario,
@@ -35,7 +35,6 @@ public class Lugar {
                  Date fecha,
                  TipoLugar tipoLugar,
                  int imagen) {
-        this.id = id;
         this.nombre = nombre;
         this.direccion = direccion;
         this.comentario = comentario;
@@ -47,11 +46,32 @@ public class Lugar {
         this.imagen = imagen;
     }
 
-    public long getId() {
+    public Lugar(int id,
+            String nombre,
+            String direccion,
+            String comentario,
+            GeoPunto geoPunto,
+            double valoracion,
+            URL url,
+            Date fecha,
+            TipoLugar tipoLugar,
+            int imagen) {
+        this.nombre = nombre;
+        this.direccion = direccion;
+        this.comentario = comentario;
+        this.geoPunto = geoPunto;
+        this.valoracion = valoracion;
+        this.url = url;
+        this.fecha = fecha;
+        this.tipoLugar = tipoLugar;
+        this.imagen = imagen;
+    }
+
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 

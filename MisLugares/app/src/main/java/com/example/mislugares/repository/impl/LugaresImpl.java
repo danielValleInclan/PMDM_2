@@ -6,6 +6,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.example.mislugares.model.GeoPunto;
 import com.example.mislugares.model.Lugar;
@@ -18,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class RepositoryImpl implements LugaresRepository {
+public class LugaresImpl implements LugaresRepository {
     private static final String DATABASE_NAME = "lugares.db";
     private static final int DATABASE_VERSION = 1;
 
@@ -39,7 +40,7 @@ public class RepositoryImpl implements LugaresRepository {
     private SQLiteDatabase database;
     private SQLiteOpenHelper dbHelper;
 
-    public RepositoryImpl(Context context) {
+    public LugaresImpl(Context context) {
         dbHelper = new SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
             @Override
             public void onCreate(SQLiteDatabase db) {
@@ -81,7 +82,7 @@ public class RepositoryImpl implements LugaresRepository {
         if (cursor != null && cursor.moveToFirst()) {
             do {
                 Lugar lugar = new Lugar();
-                lugar.setId(cursor.getLong(cursor.getColumnIndex(COLUMN_ID)));
+                lugar.setId(cursor.getInt(cursor.getColumnIndex(COLUMN_ID)));
                 lugar.setNombre(cursor.getString(cursor.getColumnIndex(COLUMN_NOMBRE)));
                 lugar.setDireccion(cursor.getString(cursor.getColumnIndex(COLUMN_DIRECCION)));
                 lugar.setComentario(cursor.getString(cursor.getColumnIndex(COLUMN_COMENTARIO)));
@@ -121,7 +122,7 @@ public class RepositoryImpl implements LugaresRepository {
 
         if (cursor != null && cursor.moveToFirst()) {
             lugar = new Lugar(
-                    cursor.getLong(cursor.getColumnIndex(COLUMN_ID)),
+                    cursor.getInt(cursor.getColumnIndex(COLUMN_ID)),
                     cursor.getString(cursor.getColumnIndex(COLUMN_NOMBRE)),
                     cursor.getString(cursor.getColumnIndex(COLUMN_DIRECCION)),
                     cursor.getString(cursor.getColumnIndex(COLUMN_COMENTARIO)),
@@ -184,7 +185,9 @@ public class RepositoryImpl implements LugaresRepository {
         String whereClause = COLUMN_ID + " = ?";
         String[] whereArgs = {String.valueOf(id)};
 
-        database.delete(TABLE_LUGARES, whereClause, whereArgs);
+        int rowsDeleted = database.delete(TABLE_LUGARES, whereClause, whereArgs);
+        Log.d("DB_TEST", "Filas eliminadas: " + rowsDeleted);
+
     }
 
     public void close() {
