@@ -132,7 +132,7 @@ public class LugaresImpl implements LugaresRepository {
                     new URL(cursor.getString(cursor.getColumnIndex(COLUMN_URL))),
                     new Date(cursor.getLong(cursor.getColumnIndex(COLUMN_FECHA))),
                     TipoLugar.valueOf(cursor.getString(cursor.getColumnIndex(COLUMN_TIPO_LUGAR))),
-                    cursor.getInt(cursor.getColumnIndex(COLUMN_IMAGEN))
+                    cursor.getString(cursor.getColumnIndex(COLUMN_IMAGEN))
             );
             cursor.close();
         }
@@ -151,7 +151,7 @@ public class LugaresImpl implements LugaresRepository {
         values.put(COLUMN_VALORACION, lugar.getValoracion());
         values.put(COLUMN_COMENTARIO, lugar.getComentario());
         values.put(COLUMN_TIPO_LUGAR, lugar.getTipoLugar());
-        values.put(COLUMN_IMAGEN, lugar.getImagen());
+        values.put(COLUMN_IMAGEN, lugar.getPathImagen());
         values.put(COLUMN_URL, String.valueOf(lugar.getUrl()));
         values.put(COLUMN_FECHA, lugar.getFecha().getTime());
 
@@ -171,7 +171,7 @@ public class LugaresImpl implements LugaresRepository {
         values.put(COLUMN_VALORACION, lugar.getValoracion());
         values.put(COLUMN_URL, lugar.getUrl().toString());
         values.put(COLUMN_TIPO_LUGAR, lugar.getTipoLugar());
-        values.put(COLUMN_IMAGEN, lugar.getImagen());
+        values.put(COLUMN_IMAGEN, lugar.getPathImagen());
 
         String whereClause = COLUMN_ID + " = ?";
         String[] whereArgs = {String.valueOf(lugar.getId())};

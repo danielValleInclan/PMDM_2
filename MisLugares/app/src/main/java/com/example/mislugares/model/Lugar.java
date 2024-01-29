@@ -1,9 +1,6 @@
 package com.example.mislugares.model;
 
 
-import android.graphics.Bitmap;
-import android.media.Image;
-
 import java.net.URL;
 import java.util.Date;
 
@@ -20,7 +17,7 @@ public class Lugar {
 
     private TipoLugar tipoLugar;
 
-    private int imagen;
+    private String pathImagen;
 
     public Lugar() {
     }
@@ -34,7 +31,7 @@ public class Lugar {
                  URL url,
                  Date fecha,
                  TipoLugar tipoLugar,
-                 int imagen) {
+                 String pathImagen) {
         this.nombre = nombre;
         this.direccion = direccion;
         this.comentario = comentario;
@@ -43,7 +40,7 @@ public class Lugar {
         this.url = url;
         this.fecha = fecha;
         this.tipoLugar = tipoLugar;
-        this.imagen = imagen;
+        this.pathImagen = pathImagen;
     }
 
     public Lugar(int id,
@@ -55,7 +52,7 @@ public class Lugar {
             URL url,
             Date fecha,
             TipoLugar tipoLugar,
-            int imagen) {
+            String pathImagen) {
         this.nombre = nombre;
         this.direccion = direccion;
         this.comentario = comentario;
@@ -64,7 +61,7 @@ public class Lugar {
         this.url = url;
         this.fecha = fecha;
         this.tipoLugar = tipoLugar;
-        this.imagen = imagen;
+        this.pathImagen = pathImagen;
     }
 
     public int getId() {
@@ -139,11 +136,11 @@ public class Lugar {
         this.tipoLugar = tipoLugar;
     }
 
-    public int getImagen() {
-        return imagen;
+    public String getPathImagen() {
+        return pathImagen;
     }
 
-    public void setImagen(int imagen) {
-        this.imagen = imagen;
+    public void setPathImagen(String pathImagen) {
+        this.pathImagen = pathImagen;
     }
 }
