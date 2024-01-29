@@ -87,7 +87,7 @@ public class LugaresImpl implements LugaresRepository {
                 lugar.setDireccion(cursor.getString(cursor.getColumnIndex(COLUMN_DIRECCION)));
                 lugar.setComentario(cursor.getString(cursor.getColumnIndex(COLUMN_COMENTARIO)));
                 lugar.setValoracion(cursor.getDouble(cursor.getColumnIndex(COLUMN_VALORACION)));
-                lugar.setUrl(new URL(cursor.getString(cursor.getColumnIndex(COLUMN_URL))));
+                lugar.setUrl(cursor.getString(cursor.getColumnIndex(COLUMN_URL)));
                 lugar.setTipoLugar(TipoLugar.valueOf(cursor.getString(cursor.getColumnIndex(COLUMN_TIPO_LUGAR))));
 
                 GeoPunto geoPunto = new GeoPunto();
@@ -129,7 +129,7 @@ public class LugaresImpl implements LugaresRepository {
                     new GeoPunto(cursor.getDouble(cursor.getColumnIndex(COLUMN_LATITUD)),
                             cursor.getDouble(cursor.getColumnIndex(COLUMN_LONGITUD))),
                     cursor.getDouble(cursor.getColumnIndex(COLUMN_VALORACION)),
-                    new URL(cursor.getString(cursor.getColumnIndex(COLUMN_URL))),
+                    cursor.getString(cursor.getColumnIndex(COLUMN_URL)),
                     new Date(cursor.getLong(cursor.getColumnIndex(COLUMN_FECHA))),
                     TipoLugar.valueOf(cursor.getString(cursor.getColumnIndex(COLUMN_TIPO_LUGAR))),
                     cursor.getString(cursor.getColumnIndex(COLUMN_IMAGEN))

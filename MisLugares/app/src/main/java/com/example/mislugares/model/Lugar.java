@@ -11,7 +11,7 @@ public class Lugar {
 
     private double valoracion;
 
-    private URL url;
+    private String url;
 
     private Date fecha;
 
@@ -28,7 +28,7 @@ public class Lugar {
                  String comentario,
                  GeoPunto geoPunto,
                  double valoracion,
-                 URL url,
+                 String url,
                  Date fecha,
                  TipoLugar tipoLugar,
                  String pathImagen) {
@@ -49,7 +49,7 @@ public class Lugar {
             String comentario,
             GeoPunto geoPunto,
             double valoracion,
-            URL url,
+            String url,
             Date fecha,
             TipoLugar tipoLugar,
             String pathImagen) {
@@ -112,11 +112,11 @@ public class Lugar {
         this.valoracion = valoracion;
     }
 
-    public URL getUrl() {
+    public String getUrl() {
         return url;
     }
 
-    public void setUrl(URL url) {
+    public void setUrl(String url) {
         this.url = url;
     }
 
