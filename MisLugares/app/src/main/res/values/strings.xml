@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">MisLugares</string>
+    <string name="title_activity_insert">Insertar Lugar</string>
+    <string name="editTextNombre">Nopmbre del lugar</string>
+    <string name="editTextComentario">Comentario sobre el lugar</string>
+    <string name="editTextUbicacion">Ubicacion</string>
+    <string name="btnSeleccionarImagen">Seleccionar Imagen</string>
+    <string name="btnCapturarFoto">Capturar Foto</string>
+    <string name="textViewPrevisualizacoinImagen">Previsualización de la imagen</string>
 </resources>

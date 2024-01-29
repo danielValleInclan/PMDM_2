@@ -1,7 +1,6 @@
 package com.example.mislugares.model;
 
 
-import java.net.URL;
 import java.util.Date;
 
 public class Lugar {
@@ -17,7 +16,7 @@ public class Lugar {
 
     private TipoLugar tipoLugar;
 
-    private String pathImagen;
+    private byte[] imagenBytes;
 
     public Lugar() {
     }
@@ -31,7 +30,7 @@ public class Lugar {
                  String url,
                  Date fecha,
                  TipoLugar tipoLugar,
-                 String pathImagen) {
+                 byte[] imagenBytes) {
         this.nombre = nombre;
         this.direccion = direccion;
         this.comentario = comentario;
@@ -40,7 +39,7 @@ public class Lugar {
         this.url = url;
         this.fecha = fecha;
         this.tipoLugar = tipoLugar;
-        this.pathImagen = pathImagen;
+        this.imagenBytes = imagenBytes;
     }
 
     public Lugar(int id,
@@ -52,7 +51,7 @@ public class Lugar {
             String url,
             Date fecha,
             TipoLugar tipoLugar,
-            String pathImagen) {
+            byte[] imagenBytes) {
         this.nombre = nombre;
         this.direccion = direccion;
         this.comentario = comentario;
@@ -61,7 +60,7 @@ public class Lugar {
         this.url = url;
         this.fecha = fecha;
         this.tipoLugar = tipoLugar;
-        this.pathImagen = pathImagen;
+        this.imagenBytes = imagenBytes;
     }
 
     public int getId() {
@@ -136,11 +135,11 @@ public class Lugar {
         this.tipoLugar = tipoLugar;
     }
 
-    public String getPathImagen() {
-        return pathImagen;
+    public byte[] getImagenBytes() {
+        return imagenBytes;
     }
 
-    public void setPathImagen(String pathImagen) {
-        this.pathImagen = pathImagen;
+    public void setImagenBytes(byte[] imagenBytes) {
+        this.imagenBytes = imagenBytes;
     }
 }

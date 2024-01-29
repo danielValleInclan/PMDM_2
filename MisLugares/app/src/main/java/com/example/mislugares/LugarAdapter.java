@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.mislugares.model.Lugar;
+import com.example.mislugares.util.ImageUtils;
 
 import java.util.List;
 
@@ -47,22 +48,9 @@ public class LugarAdapter extends ArrayAdapter<Lugar> {
         textViewTipoLugar.setText(lugar.getTipoLugar());
         textViewDireccion.setText(lugar.getDireccion());
 
-        // Obtén la ruta de la imagen desde el objeto Lugar
-        String rutaImagen = lugar.getPathImagen();
+        byte[] imagenData = lugar.getImagenBytes();
 
-        // Verifica si la ruta de la imagen no es nula o vacía
-        if (rutaImagen != null && !rutaImagen.isEmpty()) {
-            // Cargar la imagen desde la ruta y establecerla en el ImageView
-            // Puedes usar cualquier biblioteca de carga de imágenes como Glide o Picasso
-            // Aquí un ejemplo básico:
-            Bitmap bitmap = BitmapFactory.decodeFile(rutaImagen);
-            imageViewImagen.setImageBitmap(bitmap);
-        } else {
-            // Si la ruta de la imagen está vacía, puedes establecer una imagen de fallback o dejar el ImageView vacío
-            imageViewImagen.setImageResource(R.drawable.altavoz);
-        }
-
-
+        ImageUtils.mostrarImagenDesdeByteArray(imagenData, imageViewImagen);
 
         return convertView;
     }

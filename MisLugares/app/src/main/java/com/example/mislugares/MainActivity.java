@@ -2,8 +2,12 @@ package com.example.mislugares;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.ListView;
 
 import com.example.mislugares.model.GeoPunto;
 import com.example.mislugares.model.Lugar;
@@ -17,124 +21,70 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private LugaresImpl lugaresImpl;
+    LugaresImpl lugaresImpl;
+    private ListView listView;
+    private List<Lugar> listaLugares;
+    private LugarAdapter lugarAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        int image = R.drawable.altavoz;
-
-        URL url;
-        try {
-            url = new URL("http://www.google.com");
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
-        Date date = new Date(122, 0, 26);
-        GeoPunto geoPunto1 = new GeoPunto(13.0, 13.0);
-
-        Lugar lugar1 = new Lugar(
-                "España",
-                "arriba",
-                "Mu bonito",
-                geoPunto1,
-                5.0,
-                url,
-                date,
-                TipoLugar.MUSEO,
-                image);
-
-        Lugar lugar2 = new Lugar(
-                "Croacia",
-                "derecha",
-                "Mu bonito",
-                geoPunto1,
-                7.0,
-                url,
-                date,
-                TipoLugar.BAR,
-                image);
-
         lugaresImpl = new LugaresImpl(this);
 
-        // Obtener la lista de lugares antes de borrar
-        List<Lugar> lugarsBefore = null;
+        listView = findViewById(R.id.listViewLugares);
+
+        //limpiarBD();
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        actualizarListaLugares();
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_add) {
+            // Operación de inserción, por ejemplo, abrir una nueva actividad para agregar un nuevo lugar
+            // o mostrar un cuadro de diálogo para la entrada de datos.
+            // Aquí puedes agregar el código necesario para realizar la inserción.
+            Intent intent = new Intent(this, InsertActivity.class);
+            startActivity(intent);
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private List<Lugar> obtenerListaLugares() {
+        List<Lugar> listaLugares = null;
         try {
-            lugarsBefore = lugaresImpl.getAllLugares();
+            listaLugares = lugaresImpl.getAllLugares();
         } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace(); // Imprime el rastreo de la pila para obtener más información sobre el error
+            throw new RuntimeException("Error al obtener la lista de lugares", e);
         }
+        return listaLugares;
+    }
 
-        // Limpiar la base de datos
-        for (Lugar l : lugarsBefore){
-            lugaresImpl.deleteLugar((int) l.getId());
+    private void actualizarListaLugares() {
+        listaLugares = obtenerListaLugares();
+        lugarAdapter = new LugarAdapter(this, R.layout.list_item_layout, listaLugares);
+        listView.setAdapter(lugarAdapter);
+    }
+
+
+    private void limpiarBD(){
+        for (Lugar l : obtenerListaLugares()){
+            lugaresImpl.deleteLugar(l.getId());
         }
-
-        // Obtener la lista de lugares después de borrar
-        List<Lugar> lugarsAfter = null;
-        try {
-            lugarsAfter = lugaresImpl.getAllLugares();
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
-
-        // Imprimir la información de los lugares después de borrar
-        for (Lugar lugar : lugarsAfter){
-            Log.d("DB_TEST", "Lugar después de borrar: " + lugar.getNombre());
-        }
-
-        lugaresImpl.addLugar(lugar1);
-        lugaresImpl.addLugar(lugar2);
-
-        try {
-            lugarsAfter = lugaresImpl.getAllLugares();
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
-
-        int lastId = 0;
-
-        for (Lugar lugar : lugarsAfter){
-            Log.d("DB_TEST",
-                    "Id: " + lugar.getId() +
-                    " \nLugar: " + lugar.getNombre()
-                            + ", \nDirección " + lugar.getDireccion()
-                            + ", \nComentario " + lugar.getComentario()
-                            + ", \nLatitud " + lugar.getGeoPunto().getLatitud()
-                            + ", \nLongitud " + lugar.getGeoPunto().getLongitud()
-                            + ", \nValoración " + lugar.getValoracion()
-                            + ", \nURL " + lugar.getUrl()
-                            + " \nFecha " + lugar.getFecha()
-                            + " \nTipo Lugar " + lugar.getTipoLugar()
-                            + ", \nImagen: " + lugar.getImagen());
-            lastId = lugar.getId();
-        }
-
-        lugar1.setId(lastId);
-        lugaresImpl.updateLugar(lugar1);
-
-        try {
-            lugarsAfter = lugaresImpl.getAllLugares();
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
-
-        for (Lugar lugar : lugarsAfter){
-            Log.d("DB_TEST",
-                    "Id: " + lugar.getId() +
-                            " \nLugar: " + lugar.getNombre()
-                            + ", \nDirección " + lugar.getDireccion()
-                            + ", \nComentario " + lugar.getComentario()
-                            + ", \nLatitud " + lugar.getGeoPunto().getLatitud()
-                            + ", \nLongitud " + lugar.getGeoPunto().getLongitud()
-                            + ", \nValoración " + lugar.getValoracion()
-                            + ", \nURL " + lugar.getUrl()
-                            + " \nFecha " + lugar.getFecha()
-                            + " \nTipo Lugar " + lugar.getTipoLugar()
-                            + ", \nImagen: " + lugar.getImagen());
-        }
-
-        lugaresImpl.close();
     }
 }
