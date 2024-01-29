@@ -1,11 +1,14 @@
 package com.example.mislugares;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
@@ -15,6 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
+import android.widget.RatingBar;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -41,6 +45,7 @@ public class InsertActivity extends AppCompatActivity {
     private RadioGroup radioGroup;
     private byte[] imageData;
     private Button btnSeleccionarImagen;
+    private RatingBar ratingBar;
     private Button btnCapturePhoto;
     private LugaresRepository lugaresImpl;
 
@@ -62,6 +67,7 @@ public class InsertActivity extends AppCompatActivity {
         ubicacionEditText = findViewById(R.id.editTextUbicacion);
         urlEditText = findViewById(R.id.editTextUrl);
         radioGroup = findViewById(R.id.radioGroup);
+        ratingBar = findViewById(R.id.ratingBar);
 
         // Imagen
 
@@ -157,6 +163,7 @@ public class InsertActivity extends AppCompatActivity {
         String url = urlEditText.getText().toString().trim();
         int tipoLugarId = radioGroup.getCheckedRadioButtonId();
         TipoLugar tipoLugar = null;
+        double valoracion = ratingBar.getRating();
 
         // Validar los datos
 
@@ -178,7 +185,7 @@ public class InsertActivity extends AppCompatActivity {
                 ubicacion,
                 comentario,
                 geoPunto,
-                0.0,
+                valoracion,
                 url,
                 new Date(),
                 tipoLugar,
