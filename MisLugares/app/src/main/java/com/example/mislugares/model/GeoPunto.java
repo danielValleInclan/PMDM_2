@@ -3,11 +3,12 @@ package com.example.mislugares.model;
 import android.graphics.Bitmap;
 import android.media.Image;
 
+import java.io.Serializable;
 import java.net.URL;
 import java.util.Date;
 
 
-public class GeoPunto {
+public class GeoPunto implements Serializable {
     private double longitud, latitud;
 
     public GeoPunto() {

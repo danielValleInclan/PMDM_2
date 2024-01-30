@@ -5,8 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.mislugares.model.GeoPunto;
@@ -34,6 +37,20 @@ public class MainActivity extends AppCompatActivity {
         lugaresImpl = new LugaresImpl(this);
 
         listView = findViewById(R.id.listViewLugares);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // Obtener el id del lugar seleccionado
+                Lugar lugar = listaLugares.get(position);
+                Intent intent = new Intent(MainActivity.this, LugarActivity.class);
+                Log.d("INTENT", "onItemClick: id -> " + lugar.getId());
+                intent.putExtra("LUGAR_ID",(long) lugar.getId());
+
+                // Iniciar la actividad
+                startActivity(intent);
+            }
+        });
 
         //limpiarBD();
 

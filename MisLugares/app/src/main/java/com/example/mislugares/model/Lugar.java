@@ -1,9 +1,10 @@
 package com.example.mislugares.model;
 
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Lugar {
+public class Lugar implements Serializable {
     private int id;
     private String nombre, direccion, comentario;
     private GeoPunto geoPunto;
