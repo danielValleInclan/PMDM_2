@@ -172,6 +172,7 @@ public class LugaresImpl implements LugaresRepository {
         values.put(COLUMN_URL, lugar.getUrl());
         values.put(COLUMN_TIPO_LUGAR, lugar.getTipoLugar());
         values.put(COLUMN_IMAGEN, lugar.getImagenBytes());
+        values.put(COLUMN_FECHA, lugar.getFecha().getTime());
 
         String whereClause = COLUMN_ID + " = ?";
         String[] whereArgs = {String.valueOf(lugar.getId())};
