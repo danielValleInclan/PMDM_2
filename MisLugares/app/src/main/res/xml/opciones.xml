@@ -14,4 +14,12 @@
             android:singleLine="true"
             android:title="@string/prefPasswd" />
     </PreferenceCategory>
+
+    <Preference
+        android:title="Cancelar"
+        android:key="cancel_button"/>
+
+    <Preference
+        android:title="Confirmar"
+        android:key="confirm_button"/>
 </PreferenceScreen>
