@@ -43,6 +43,9 @@
 
             <!-- Otros atributos de actividad si los tienes -->
         </activity>
+        <activity android:name=".OpcionesFragment"
+            android:label="@string/app_name">
+        </activity>
     </application>
 
 </manifest>

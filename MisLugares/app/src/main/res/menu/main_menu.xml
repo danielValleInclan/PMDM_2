@@ -2,6 +2,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/action_preferences"
+        android:title="@string/btnPreferencias"
+        app:showAsAction="always"/>
+    <item
         android:id="@+id/action_add"
         app:icon="@android:drawable/ic_menu_add"
         android:title="@string/itemAgregar"

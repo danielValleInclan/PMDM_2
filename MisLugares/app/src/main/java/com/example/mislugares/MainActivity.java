@@ -75,6 +75,9 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, InsertActivity.class);
             startActivity(intent);
             return true;
+        } else if (item.getItemId() == R.id.action_preferences) {
+            startActivity(new Intent(MainActivity.this, OpcionesFragment.class));
+            return true;
         } else {
             return super.onOptionsItemSelected(item);
         }

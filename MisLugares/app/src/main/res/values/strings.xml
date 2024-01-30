@@ -10,4 +10,7 @@
     <string name="itemAgregar">Agregar</string>
     <string name="btnBorrar">Borrar</string>
     <string name="btnGuardar">Guardar</string>
+    <string name="btnPreferencias">Preferencias</string>
+    <string name="prefNombre">Nombre</string>
+    <string name="prefPasswd">Contraseña</string>
 </resources>
