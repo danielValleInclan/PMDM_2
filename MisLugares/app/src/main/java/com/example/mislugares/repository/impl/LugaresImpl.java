@@ -182,7 +182,7 @@ public class LugaresImpl implements LugaresRepository {
     }
 
     @Override
-    public void deleteLugar(int id) {
+    public void deleteLugar(long id) {
         String whereClause = COLUMN_ID + " = ?";
         String[] whereArgs = {String.valueOf(id)};
 

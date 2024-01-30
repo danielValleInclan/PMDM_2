@@ -11,5 +11,5 @@ public interface LugaresRepository {
     Lugar getLugarById(long id) throws MalformedURLException;
     void addLugar(Lugar lugar);
     void updateLugar(Lugar lugar);
-    void deleteLugar(int id);
+    void deleteLugar(long id);
 }

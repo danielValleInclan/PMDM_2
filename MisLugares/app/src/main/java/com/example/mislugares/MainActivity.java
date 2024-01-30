@@ -72,7 +72,6 @@ public class MainActivity extends AppCompatActivity {
         if (item.getItemId() == R.id.action_add) {
             // Operación de inserción, por ejemplo, abrir una nueva actividad para agregar un nuevo lugar
             // o mostrar un cuadro de diálogo para la entrada de datos.
-            // Aquí puedes agregar el código necesario para realizar la inserción.
             Intent intent = new Intent(this, InsertActivity.class);
             startActivity(intent);
             return true;

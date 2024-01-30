@@ -5,5 +5,5 @@
         android:id="@+id/action_add"
         app:icon="@android:drawable/ic_menu_add"
         android:title="@string/itemAgregar"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
 </menu>
