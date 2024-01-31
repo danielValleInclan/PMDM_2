@@ -11,8 +11,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        CanvasDividido2 canvasDividido2 = new CanvasDividido2(this);
-        setContentView(canvasDividido2);
+        MiQuintoGrafico miQuintoGrafico = new MiQuintoGrafico(this);
+        setContentView(miQuintoGrafico);
+
+        //CanvasDividido2 canvasDividido2 = new CanvasDividido2(this);
+        //setContentView(canvasDividido2);
 
         /*CanvasDivididoView canvasDivididoView = new CanvasDivididoView(this);
         setContentView(canvasDivididoView);*/
