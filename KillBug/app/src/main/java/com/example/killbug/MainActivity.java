@@ -126,7 +126,9 @@ public class MainActivity extends AppCompatActivity {
 
                 try{Thread.sleep(dt);}
 
-                catch (InterruptedException e){;}
+                catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
 
             }
 
