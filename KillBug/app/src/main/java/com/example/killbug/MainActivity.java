@@ -3,6 +3,8 @@ package com.example.killbug;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -13,8 +15,8 @@ public class MainActivity extends AppCompatActivity {
 
     boolean continuar=true;
 
-    float velocidadY=1.5f;
-    float velocidadX=1.0f;
+    float velocidadY=0.8f;
+    float velocidadX=0.8f;
 
     int dt=10;
 
@@ -80,7 +82,9 @@ public class MainActivity extends AppCompatActivity {
 
         int x,y,ymax, xmax;
 
-        Paint paintFondo,paintParticula,paint;
+        Paint paintFondo,paint;
+
+        Bitmap bichoBitmap;
 
         public DinamicaView(Context context) {
 
@@ -90,13 +94,12 @@ public class MainActivity extends AppCompatActivity {
 
             paintFondo=new Paint();
 
-            paintParticula=new Paint();
 
             paint=new Paint();
 
             paintFondo.setColor(Color.WHITE);
 
-            paintParticula.setColor(Color.RED);
+            bichoBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.bicho);
 
             paint.setColor(Color.BLACK);
 
@@ -153,12 +156,20 @@ public class MainActivity extends AppCompatActivity {
         @Override
 
         public void onDraw(Canvas canvas){
+            int bichoWidth = bichoBitmap.getWidth();
+            int bichoHeight = bichoBitmap.getHeight();
+
+            // Ajustar las coordenadas de dibujo para asegurarse de que la imagen esté completamente dentro del canvas
+            int drawX = Math.max(0, Math.min(x - bichoWidth / 2, xmax - bichoWidth));
+            int drawY = Math.max(0, Math.min(y - bichoHeight / 2, ymax - bichoHeight));
+
 
             canvas.drawPaint(paintFondo);
 
             paint.setTextSize(20*s);
 
-            canvas.drawCircle(x,y,30*s,paintParticula);
+            // Dibujar la imagen del bicho ajustada
+            canvas.drawBitmap(bichoBitmap, drawX, drawY, paint);
 
             canvas.drawText("y= "+y,10*s,25*s,paint);
             canvas.drawText("x=" +x, 10*s, 50*s, paint);
