@@ -9,6 +9,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
@@ -86,6 +87,8 @@ public class MainActivity extends AppCompatActivity {
 
         Bitmap bichoBitmap;
 
+        boolean bichoVisible = true;
+
         public DinamicaView(Context context) {
 
             super(context);
@@ -106,36 +109,25 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-
         public void run() {
+            while (continuar) {
+                tiempo = tiempo + dt;
+                y = y + (int) (velocidadY * dt);
+                x = x + (int) (velocidadX * dt);
 
-            while(continuar){
-
-                tiempo=tiempo+dt;
-
-//movimiento rectilineo uniforme y=y+v*t
-
-                y=y+(int)(velocidadY*dt);
-                x=x+(int) (velocidadX*dt);
-
-                //si llega abajo invertimos la velocidad:
-                //si llega arriba invertimos la velocidad:
-
-                if(y>ymax || y<0) velocidadY=-velocidadY;
-
-                if (x>xmax || x<0) velocidadX=-velocidadX;
+                if (y > ymax || y < 0) velocidadY = -velocidadY;
+                if (x > xmax || x < 0) velocidadX = -velocidadX;
 
                 postInvalidate();
 
-                try{Thread.sleep(dt);}
-
-                catch (InterruptedException e) {
+                try {
+                    Thread.sleep(dt);
+                } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
-
             }
-
         }
+
 
 //obtiene geometria del canvas
 
@@ -156,25 +148,36 @@ public class MainActivity extends AppCompatActivity {
         @Override
 
         public void onDraw(Canvas canvas){
-            int bichoWidth = bichoBitmap.getWidth();
-            int bichoHeight = bichoBitmap.getHeight();
-
-            // Ajustar las coordenadas de dibujo para asegurarse de que la imagen esté completamente dentro del canvas
-            int drawX = Math.max(0, Math.min(x - bichoWidth / 2, xmax - bichoWidth));
-            int drawY = Math.max(0, Math.min(y - bichoHeight / 2, ymax - bichoHeight));
-
-
+            paint.setTextSize(20 * s);
             canvas.drawPaint(paintFondo);
+            canvas.drawText("y= " + y, 10 * s, 25 * s, paint);
+            canvas.drawText("x=" + x, 10 * s, 50 * s, paint);
+            canvas.drawText("tiempo= " + tiempo, 10 * s, 75 * s, paint);
+            if (bichoVisible) { // Solo dibujar el bicho si está visible
+                int bichoWidth = bichoBitmap.getWidth();
+                int bichoHeight = bichoBitmap.getHeight();
+                int drawX = Math.max(0, Math.min(x - bichoWidth / 2, xmax - bichoWidth));
+                int drawY = Math.max(0, Math.min(y - bichoHeight / 2, ymax - bichoHeight));
+                canvas.drawBitmap(bichoBitmap, drawX, drawY, paint);
+            }
 
-            paint.setTextSize(20*s);
-
-            // Dibujar la imagen del bicho ajustada
-            canvas.drawBitmap(bichoBitmap, drawX, drawY, paint);
-
-            canvas.drawText("y= "+y,10*s,25*s,paint);
-            canvas.drawText("x=" +x, 10*s, 50*s, paint);
-            canvas.drawText("tiempo= " + tiempo,10*s,75*s,paint);
-
+        }
+        @Override
+        public boolean onTouchEvent(MotionEvent event) {
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                float touchX = event.getX();
+                float touchY = event.getY();
+                int bichoWidth = bichoBitmap.getWidth();
+                int bichoHeight = bichoBitmap.getHeight();
+                int drawX = Math.max(0, Math.min(x - bichoWidth / 2, xmax - bichoWidth));
+                int drawY = Math.max(0, Math.min(y - bichoHeight / 2, ymax - bichoHeight));
+                if (touchX >= drawX && touchX <= drawX + bichoWidth &&
+                        touchY >= drawY && touchY <= drawY + bichoHeight) {
+                    bichoVisible = false; // Hacer que el bicho sea invisible si se hace clic sobre él
+                    postInvalidate(); // Volver a dibujar la vista para que el bicho desaparezca
+                }
+            }
+            return true;
         }
 
     }//fin clase DinamicaView
