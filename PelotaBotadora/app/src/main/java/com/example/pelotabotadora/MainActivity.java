@@ -160,7 +160,6 @@ public class MainActivity extends AppCompatActivity {
 
             canvas.drawText("y= "+y,10*s,25*s,paint);
             canvas.drawText("x=" +x, 10*s, 50*s, paint);
-
             canvas.drawText("tiempo= " + tiempo,10*s,75*s,paint);
 
         }
