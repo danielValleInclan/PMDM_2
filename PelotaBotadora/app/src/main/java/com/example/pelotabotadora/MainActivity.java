@@ -13,7 +13,8 @@ public class MainActivity extends AppCompatActivity {
 
     boolean continuar=true;
 
-    float velocidad=1.5f;
+    float velocidadY=1.5f;
+    float velocidadX=1.0f;
 
     int dt=10;
 
@@ -77,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
 
     class DinamicaView extends View implements Runnable{
 
-        int x,y,ymax;
+        int x,y,ymax, xmax;
 
         Paint paintFondo,paintParticula,paint;
 
@@ -111,23 +112,15 @@ public class MainActivity extends AppCompatActivity {
 
 //movimiento rectilineo uniforme y=y+v*t
 
-                y=y+(int)(velocidad*dt);
+                y=y+(int)(velocidadY*dt);
+                x=x+(int) (velocidadX*dt);
 
-//si llega abajo invertimos la velocidad:
+                //si llega abajo invertimos la velocidad:
+                //si llega arriba invertimos la velocidad:
 
-                if(y>ymax){
+                if(y>ymax || y<0) velocidadY=-velocidadY;
 
-                    velocidad=-velocidad;
-
-                }
-
-//si llega arriba invertimos la velocidad:
-
-                if(y<0){
-
-                    velocidad=-velocidad;
-
-                }
+                if (x>xmax || x<0) velocidadX=-velocidadX;
 
                 postInvalidate();
 
@@ -149,6 +142,8 @@ public class MainActivity extends AppCompatActivity {
 
             y=0;
 
+            xmax=w;
+
             ymax=h;
 
         }
@@ -164,8 +159,9 @@ public class MainActivity extends AppCompatActivity {
             canvas.drawCircle(x,y,30*s,paintParticula);
 
             canvas.drawText("y= "+y,10*s,25*s,paint);
+            canvas.drawText("x=" +x, 10*s, 50*s, paint);
 
-                    canvas.drawText("tiempo= " + tiempo,10*s,50*s,paint);
+            canvas.drawText("tiempo= " + tiempo,10*s,50*s,paint);
 
         }
 
