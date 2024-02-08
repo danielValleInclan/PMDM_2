@@ -11,6 +11,7 @@ import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -167,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
                         if (allBichosDead()) {
                             // Mostrar mensaje de felicitaciones
                             // Por ejemplo:
-                            // Toast.makeText(getContext(), "¡Enhorabuena, has matado a todos los bichos!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), "¡Enhorabuena, has matado a todos los bichos en " + tiempo + " segundos!", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
