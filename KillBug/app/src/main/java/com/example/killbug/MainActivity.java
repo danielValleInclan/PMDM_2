@@ -131,13 +131,16 @@ public class MainActivity extends AppCompatActivity {
 
         protected void onSizeChanged(int w,int h,int oldw,int oldh){
 
-            xmax = w - BitmapFactory.decodeResource(getResources(), R.drawable.bicho).getWidth() / 2;
-            ymax = h - BitmapFactory.decodeResource(getResources(), R.drawable.bicho).getHeight() / 2;
+            int bitmapWidth = BitmapFactory.decodeResource(getResources(), R.drawable.bicho).getWidth();
+            int bitmapHeight = BitmapFactory.decodeResource(getResources(), R.drawable.bicho).getHeight();
+
+            xmax = w - bitmapWidth; // Restar el ancho del bitmap para evitar que los bichos se salgan completamente de la derecha
+            ymax = h - bitmapHeight; // Restar el alto del bitmap para evitar que los bichos se salgan completamente de la parte inferior
             bichos.clear();
             Random random = new Random();
             for (int i = 0; i < numeroBichos; i++) {
-                int x = random.nextInt(w);
-                int y = random.nextInt(h);
+                int x = random.nextInt(xmax);
+                int y = random.nextInt(ymax);
                 bichos.add(new Bicho(x, y, BitmapFactory.decodeResource(getResources(), R.drawable.bicho)));
             }
 
