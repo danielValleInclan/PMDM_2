@@ -9,6 +9,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
@@ -85,6 +86,10 @@ public class MainActivity extends AppCompatActivity {
 
         List<Bicho> bichos = new ArrayList<>();
 
+        private List<Coordenada> coordenadasSangre = new ArrayList<>();
+
+        private Handler handler = new Handler();
+
         public DinamicaView(Context context) {
 
             super(context);
@@ -158,6 +163,10 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
 
+            for (Coordenada coordenada : coordenadasSangre) {
+                canvas.drawBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.sangre), coordenada.x, coordenada.y, paint);
+            }
+
         }
         @Override
         public boolean onTouchEvent(MotionEvent event) {
@@ -168,9 +177,15 @@ public class MainActivity extends AppCompatActivity {
                     if (bicho.isVisible() && bicho.isTouched(touchX, touchY)) {
                         bicho.setVisible(false);
                         postInvalidate();
+                        coordenadasSangre.add(new Coordenada(touchX, touchY)); // Guardar las coordenadas de la sangre
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                coordenadasSangre.clear(); // Eliminar las coordenadas después de 2 segundos
+                                postInvalidate(); // Volver a dibujar para que desaparezca la sangre
+                            }
+                        }, 2000); // 2000 milisegundos = 2 segundos
                         if (allBichosDead()) {
-                            // Mostrar mensaje de felicitaciones
-                            // Por ejemplo:
                             Toast.makeText(getContext(), "¡Enhorabuena, has matado a todos los bichos en " + tiempo + " segundos!", Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -240,6 +255,17 @@ public class MainActivity extends AppCompatActivity {
 
         public void reverseY() {
             velocidadY = -velocidadY;
+        }
+    }
+
+    // Clase interna para representar las coordenadas
+    private class Coordenada {
+        float x;
+        float y;
+
+        public Coordenada(float x, float y) {
+            this.x = x;
+            this.y = y;
         }
     }
 
