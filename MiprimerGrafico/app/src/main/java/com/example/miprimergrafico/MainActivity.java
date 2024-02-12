@@ -11,6 +11,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        TercerGV graficoView = findViewById(R.id.graficoView);
+        CuartoGV graficoView = findViewById(R.id.graficoView);
     }
 }
