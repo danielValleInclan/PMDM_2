@@ -175,18 +175,20 @@ public class MainActivity extends AppCompatActivity {
                 float touchY = event.getY();
                 for (Bicho bicho : bichos) {
                     if (bicho.isVisible() && bicho.isTouched(touchX, touchY)) {
-                        bicho.setVisible(false);
-                        postInvalidate();
-                        coordenadasSangre.add(new Coordenada(touchX, touchY)); // Guardar las coordenadas de la sangre
-                        handler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                coordenadasSangre.clear(); // Eliminar las coordenadas después de 2 segundos
-                                postInvalidate(); // Volver a dibujar para que desaparezca la sangre
+                        if ((Math.abs(touchX - bicho.getX()) <= 30 * s && Math.abs(touchY - bicho.getY()) <= 30 * s)) {
+                            bicho.setVisible(false);
+                            postInvalidate();
+                            coordenadasSangre.add(new Coordenada(touchX, touchY)); // Guardar las coordenadas de la sangre
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    coordenadasSangre.clear(); // Eliminar las coordenadas después de 2 segundos
+                                    postInvalidate(); // Volver a dibujar para que desaparezca la sangre
+                                }
+                            }, 2000); // 2000 milisegundos = 2 segundos
+                            if (allBichosDead()) {
+                                Toast.makeText(getContext(), "¡Enhorabuena, has matado a todos los bichos en " + tiempo + " segundos!", Toast.LENGTH_SHORT).show();
                             }
-                        }, 2000); // 2000 milisegundos = 2 segundos
-                        if (allBichosDead()) {
-                            Toast.makeText(getContext(), "¡Enhorabuena, has matado a todos los bichos en " + tiempo + " segundos!", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
