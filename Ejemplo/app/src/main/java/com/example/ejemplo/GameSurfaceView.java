@@ -1,6 +1,7 @@
 package com.example.ejemplo;
 
 import android.content.Context;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
@@ -11,12 +12,12 @@ import android.view.SurfaceView;
 import androidx.annotation.NonNull;
 
 public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callback {
-    private GameThread gameThread = null ;
+
     private Paint paint;
     private float playerX, playerY;
 
     public GameSurfaceView(Context context, AttributeSet attributeSet) {
-        super(context);
+        super(context, attributeSet);
         getHolder().addCallback(this);
         // Configuración de eventos táctiles y de teclado
         setFocusable(true);
@@ -84,4 +85,35 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     public Paint getPaint() {
         return paint;
     }
+
+    public class GameThread extends Thread{
+        private SurfaceHolder holder;
+        boolean running = false;
+
+        public GameThread(SurfaceHolder surfaceHolder){
+            this.holder = surfaceHolder;
+        }
+
+        public void setRunning(boolean run) {
+            running = run;
+        }
+
+        @Override
+        public void run() {
+            while (running) {
+                Canvas canvas = holder.lockCanvas();
+                if (canvas != null) {
+                    // Operaciones de dibujo en el lienzo
+                    drawGame(canvas);
+                    holder.unlockCanvasAndPost(canvas);
+                }
+            }
+        }
+        private void drawGame(Canvas canvas) {
+            // Dibujar en el canvas
+            canvas.drawColor(Color.BLACK); // Fondo negro
+            canvas.drawCircle(getPlayerX(), getPlayerY(), 50, getPaint()); // Jugador como un círculo rojo
+        }
+    }
+
 }
