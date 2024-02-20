@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 
 public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callback {
 
+    private GameThread gameThread;
     private Paint paint;
     private float playerX, playerY;
 
@@ -31,6 +32,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     public void surfaceCreated(@NonNull SurfaceHolder holder) {
         // Inicialización de hilo de juego
         gameThread = new GameThread(holder);
+        gameThread.setGameSurfaceView(this);
         gameThread.setRunning(true);
         gameThread.start();
     }
@@ -85,35 +87,4 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     public Paint getPaint() {
         return paint;
     }
-
-    public class GameThread extends Thread{
-        private SurfaceHolder holder;
-        boolean running = false;
-
-        public GameThread(SurfaceHolder surfaceHolder){
-            this.holder = surfaceHolder;
-        }
-
-        public void setRunning(boolean run) {
-            running = run;
-        }
-
-        @Override
-        public void run() {
-            while (running) {
-                Canvas canvas = holder.lockCanvas();
-                if (canvas != null) {
-                    // Operaciones de dibujo en el lienzo
-                    drawGame(canvas);
-                    holder.unlockCanvasAndPost(canvas);
-                }
-            }
-        }
-        private void drawGame(Canvas canvas) {
-            // Dibujar en el canvas
-            canvas.drawColor(Color.BLACK); // Fondo negro
-            canvas.drawCircle(getPlayerX(), getPlayerY(), 50, getPaint()); // Jugador como un círculo rojo
-        }
-    }
-
 }

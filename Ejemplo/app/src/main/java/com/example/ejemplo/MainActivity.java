@@ -12,7 +12,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         gameSurfaceView = new GameSurfaceView(this, null);
-        gameThread = new GameThread(gameSurfaceView.getHolder());
         setContentView(gameSurfaceView);
     }
 }
