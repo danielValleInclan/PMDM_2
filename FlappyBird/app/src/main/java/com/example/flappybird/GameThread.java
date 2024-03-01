@@ -58,7 +58,7 @@ public class GameThread extends Thread{
         // Inicializar square y player después de que gameSurfaceView se haya configurado
         if (gameSurfaceView != null) {
             Bitmap playerBitmap = BitmapFactory.decodeResource(gameSurfaceView.getResources(), R.drawable.bird);
-            player = new Player(playerBitmap, gameSurfaceView.getWidth() / 2, gameSurfaceView.getHeight() / 2, -15.0f, 0.0f, 5.0f);
+            player = new Player(playerBitmap, gameSurfaceView.getWidth() / 5, gameSurfaceView.getHeight() / 2, -25.0f, 0.0f, 10.0f);
         }
     }
 
