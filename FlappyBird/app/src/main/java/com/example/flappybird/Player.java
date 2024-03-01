@@ -4,31 +4,34 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
 public class Player {
-    private float x, y;
-    private float gravity;
-    private float jumpPower;
-    private boolean isTouched;
+    private float x, y; // Posición del jugador
+    private float velocityY; // Velocidad vertical
+    private float jumpPower; // Potencia de salto
+    private float fallSpeed; // Velocidad de caída constante
 
     private Bitmap bitmap;
 
-    public Player(Bitmap bitmap, float initialX, float initialY, float gravity, float jumpPower) {
+    public Player(Bitmap bitmap, float initialX, float initialY, float jumpPower, float velocityY, float fallSpeed) {
         this.bitmap = bitmap;
         this.x = initialX;
         this.y = initialY;
-        this.gravity = gravity;
         this.jumpPower = jumpPower;
-        this.isTouched = false;
+        this.velocityY = velocityY;
+        this.fallSpeed = fallSpeed;
     }
 
-    public void update() {
-        if (!isTouched) {
-            y += gravity; // Simular la caída del jugador aplicando la gravedad
+    // Método para actualizar la posición del jugador
+    public void update(boolean isTouching) {
+        if (isTouching) {
+            // Si se detecta un toque en la pantalla, el jugador realiza un salto hacia arriba
+            velocityY = jumpPower; // Asignar la potencia de salto
+        } else {
+            // Si no se detectan toques en la pantalla, el jugador cae a una velocidad constante
+            velocityY = fallSpeed; // Asignar la velocidad de caída constante
         }
-    }
 
-    public void jump() {
-        y += jumpPower; // Aplicar el impulso hacia arriba cuando el jugador salta
-        isTouched = true;
+        // Actualizar la posición vertical del jugador
+        y += velocityY;
     }
 
     public void draw(Canvas canvas) {
@@ -49,12 +52,5 @@ public class Player {
         this.y = y;
     }
 
-    public boolean isTouched() {
-        return isTouched;
-    }
-
-    public void setTouched(boolean touched) {
-        isTouched = touched;
-    }
 }
 

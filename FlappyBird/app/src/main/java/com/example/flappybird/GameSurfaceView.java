@@ -14,6 +14,13 @@ import android.view.SurfaceView;
 public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callback {
     private GameThread gameThread;
 
+    private boolean isTouching = false;
+
+
+    public Boolean getIsTouching() {
+        return this.isTouching;
+    }
+
 
     public GameSurfaceView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -48,5 +55,18 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                isTouching = true;
+                break;
+            case MotionEvent.ACTION_UP:
+                isTouching = false;
+                break;
+        }
+        return true;
     }
 }

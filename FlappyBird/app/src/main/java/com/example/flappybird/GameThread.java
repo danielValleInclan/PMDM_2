@@ -58,13 +58,14 @@ public class GameThread extends Thread{
         // Inicializar square y player después de que gameSurfaceView se haya configurado
         if (gameSurfaceView != null) {
             Bitmap playerBitmap = BitmapFactory.decodeResource(gameSurfaceView.getResources(), R.drawable.bird);
-            player = new Player(playerBitmap, gameSurfaceView.getWidth() / 2, gameSurfaceView.getHeight() / 2, 0.1f, -10.0f);
+            player = new Player(playerBitmap, gameSurfaceView.getWidth() / 2, gameSurfaceView.getHeight() / 2, -15.0f, 0.0f, 5.0f);
         }
     }
 
-
     private void updateGame() {
-        player.update(); // Actualizar al jugador
+        // Llamada al método update de Player para actualizar su estado
+        player.update(gameSurfaceView.getIsTouching());
+        // Otras actualizaciones del juego, como la lógica de colisión, actualización de objetos, etc.
     }
 
 }
