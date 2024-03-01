@@ -1,6 +1,9 @@
 package com.example.flappybird;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
@@ -8,30 +11,24 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callback  {
+public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callback {
     private GameThread gameThread;
-    private Paint paint;
-    private float playerX, playerY;
 
-    public GameSurfaceView(Context context, AttributeSet attributeSet) {
-        super(context, attributeSet);
+
+    public GameSurfaceView(Context context, AttributeSet attrs) {
+        super(context, attrs);
         getHolder().addCallback(this);
-        // Configuración de eventos táctiles y de teclado
-        setFocusable(true);
-        // Inicialización de objetos y recursos
-        paint = new Paint();
-        paint.setColor(Color.RED);
     }
-
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        // Iniciación del hilo juego
+        // Cuando la superficie de dibujo se crea, iniciar el hilo del juego
         gameThread = new GameThread(holder, getContext());
         gameThread.setRunning(true);
-        gameThread.setGameSurfaceView(this);
+        gameThread.setGameSurfaceView(this); // Llamar a setGameSurfaceView después de que GameSurfaceView se haya creado
         gameThread.start();
     }
+
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
@@ -40,7 +37,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
-        // Detener el hilo de juego y liberar recursos
+        // Cuando la superficie de dibujo se destruye, detener el hilo del juego
         boolean retry = true;
         gameThread.setRunning(false);
         while (retry) {
@@ -51,33 +48,5 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                 e.printStackTrace();
             }
         }
-    }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event){
-        // Manejar eventos táctiles
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                playerX = event.getX();
-                playerY = event.getY();
-                break;
-            case MotionEvent.ACTION_MOVE:
-                playerX = event.getX();
-                playerY = event.getY();
-                break;
-        }
-        return true;
-    }
-
-    public float getPlayerX() {
-        return playerX;
-    }
-
-    public float getPlayerY() {
-        return playerY;
-    }
-
-    public Paint getPaint() {
-        return paint;
     }
 }

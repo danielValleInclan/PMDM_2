@@ -1,6 +1,8 @@
 package com.example.flappybird;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.view.SurfaceHolder;
@@ -10,13 +12,10 @@ public class GameThread extends Thread{
     private GameSurfaceView gameSurfaceView;
     private SurfaceHolder surfaceHolder;
     private boolean running = false;
-
-    private Square square;
+    private Player player;
 
     public GameThread(SurfaceHolder holder, Context context) {
         surfaceHolder = holder;
-        square = new Square(context.getResources().getDisplayMetrics().widthPixels,
-                context.getResources().getDisplayMetrics().heightPixels);
     }
     public void setRunning(boolean run) {
         running = run;
@@ -25,25 +24,29 @@ public class GameThread extends Thread{
     @Override
     public void run() {
         while (running) {
-            Canvas canvas = surfaceHolder.lockCanvas();
-            if (canvas != null){
-                // Operaciones de dibujo en el lienzo
-                drawGame(canvas);
-                surfaceHolder.unlockCanvasAndPost(canvas);
-
-                updateGame();
+            Canvas canvas = null;
+            try {
+                canvas = surfaceHolder.lockCanvas();
+                synchronized (surfaceHolder) {
+                    if (canvas != null) {
+                        updateGame();
+                        drawGame(canvas);
+                    }
+                }
+            } finally {
+                if (canvas != null) {
+                    surfaceHolder.unlockCanvasAndPost(canvas);
+                }
             }
         }
     }
+
     private void drawGame(Canvas canvas) {
-        // Dibujar en el canvas
         canvas.drawColor(Color.BLACK); // Fondo negro
-        canvas.drawCircle(
-                gameSurfaceView.getPlayerX(),
-                gameSurfaceView.getPlayerY(),
-                50,
-                gameSurfaceView.getPaint()); // Jugador como un círculo rojo
-        square.draw(canvas); // Dibujar el cuadrado azul
+        //canvas.drawRect(square.getX(), square.getY(),
+         //       square.getX() + square.getWidth(), square.getY() + square.getHeight(),
+          //      square.getPaint()); // Dibujar el cuadrado azul
+        player.draw(canvas); // Dibujar al jugador
     }
 
     private void drawSquare(){
@@ -51,11 +54,17 @@ public class GameThread extends Thread{
     }
     public void setGameSurfaceView(GameSurfaceView gameSurfaceView) {
         this.gameSurfaceView = gameSurfaceView;
+
+        // Inicializar square y player después de que gameSurfaceView se haya configurado
+        if (gameSurfaceView != null) {
+            Bitmap playerBitmap = BitmapFactory.decodeResource(gameSurfaceView.getResources(), R.drawable.bird);
+            player = new Player(playerBitmap, gameSurfaceView.getWidth() / 2, gameSurfaceView.getHeight() / 2, 0.1f, -10.0f);
+        }
     }
 
+
     private void updateGame() {
-        // Actualizar la lógica del juego, incluyendo el movimiento del cuadrado
-        square.update();
+        player.update(); // Actualizar al jugador
     }
 
 }
