@@ -32,6 +32,11 @@ public class Player {
 
         // Actualizar la posición vertical del jugador
         y += velocityY;
+
+        // Verificar si el jugador ha alcanzado la parte superior de la pantalla
+        if (y < 0) {
+            y = 0; // Establecer la posición del jugador en la parte superior de la pantalla
+        }
     }
 
     public void draw(Canvas canvas) {
