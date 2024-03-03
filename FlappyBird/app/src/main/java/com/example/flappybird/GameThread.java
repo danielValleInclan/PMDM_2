@@ -14,10 +14,20 @@ public class GameThread extends Thread{
     private boolean running = false;
     private Player player;
 
+    private boolean isPaused = false;
+
+    private Bitmap playerBitmap;
+
+    public void togglePause() {
+        isPaused = !isPaused;
+    }
+
+
     public GameThread(SurfaceHolder holder, GameSurfaceView gameSurfaceView) {
         surfaceHolder = holder;
         this.gameSurfaceView = gameSurfaceView;
         running = true;
+        playerBitmap = BitmapFactory.decodeResource(gameSurfaceView.getResources(), R.drawable.bird);
     }
     public void setRunning(boolean run) {
         running = run;
@@ -30,7 +40,7 @@ public class GameThread extends Thread{
             try {
                 canvas = surfaceHolder.lockCanvas();
                 synchronized (surfaceHolder) {
-                    if (canvas != null) {
+                    if (canvas != null && !isPaused) {
                         updateGame();
                         drawGame(canvas);
                     }
@@ -53,7 +63,6 @@ public class GameThread extends Thread{
 
         // Inicializar square y player después de que gameSurfaceView se haya configurado
         if (gameSurfaceView != null) {
-            Bitmap playerBitmap = BitmapFactory.decodeResource(gameSurfaceView.getResources(), R.drawable.bird);
             player = new Player(playerBitmap, gameSurfaceView.getWidth() / 5, gameSurfaceView.getHeight() / 2, -25.0f, 0.0f, 10.0f);
         }
     }
@@ -63,7 +72,7 @@ public class GameThread extends Thread{
         player.update(gameSurfaceView.getIsTouching());
         // Otras actualizaciones del juego, como la lógica de colisión, actualización de objetos, etc.
 
-        if (player.getY() >= gameSurfaceView.getHeight()) {
+        if (player.getY() >= gameSurfaceView.getHeight() - playerBitmap.getHeight()) {
             // Reiniciar el juego
             restartGame();
         }
