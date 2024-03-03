@@ -57,5 +57,7 @@ public class Player {
         this.y = y;
     }
 
+    public void setX(float x ){this.x = x;}
+
 }
 

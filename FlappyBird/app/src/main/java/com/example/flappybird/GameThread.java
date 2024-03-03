@@ -62,6 +62,18 @@ public class GameThread extends Thread{
         // Llamada al método update de Player para actualizar su estado
         player.update(gameSurfaceView.getIsTouching());
         // Otras actualizaciones del juego, como la lógica de colisión, actualización de objetos, etc.
+
+        if (player.getY() >= gameSurfaceView.getHeight()) {
+            // Reiniciar el juego
+            restartGame();
+        }
     }
+
+    public void restartGame() {
+        player.setY(gameSurfaceView.getHeight() / 2); // Restablecer las propiedades del jugador
+        player.setX(gameSurfaceView.getWidth() / 5);
+        // Otras reinicializaciones de variables de juego necesarias
+    }
+
 
 }
