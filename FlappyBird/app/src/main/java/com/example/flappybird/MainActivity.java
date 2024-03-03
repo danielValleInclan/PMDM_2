@@ -14,7 +14,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        gameSurfaceView = new GameSurfaceView(this, null);
+        gameSurfaceView = new GameSurfaceView(this);
         setContentView(gameSurfaceView);
     }
 }

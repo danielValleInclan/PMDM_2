@@ -14,8 +14,10 @@ public class GameThread extends Thread{
     private boolean running = false;
     private Player player;
 
-    public GameThread(SurfaceHolder holder, Context context) {
+    public GameThread(SurfaceHolder holder, GameSurfaceView gameSurfaceView) {
         surfaceHolder = holder;
+        this.gameSurfaceView = gameSurfaceView;
+        running = true;
     }
     public void setRunning(boolean run) {
         running = run;
@@ -43,15 +45,9 @@ public class GameThread extends Thread{
 
     private void drawGame(Canvas canvas) {
         canvas.drawColor(Color.BLACK); // Fondo negro
-        //canvas.drawRect(square.getX(), square.getY(),
-         //       square.getX() + square.getWidth(), square.getY() + square.getHeight(),
-          //      square.getPaint()); // Dibujar el cuadrado azul
         player.draw(canvas); // Dibujar al jugador
     }
 
-    private void drawSquare(){
-
-    }
     public void setGameSurfaceView(GameSurfaceView gameSurfaceView) {
         this.gameSurfaceView = gameSurfaceView;
 

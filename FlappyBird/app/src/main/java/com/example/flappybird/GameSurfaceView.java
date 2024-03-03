@@ -22,15 +22,15 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     }
 
 
-    public GameSurfaceView(Context context, AttributeSet attrs) {
-        super(context, attrs);
+    public GameSurfaceView(Context context) {
+        super(context);
         getHolder().addCallback(this);
     }
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         // Cuando la superficie de dibujo se crea, iniciar el hilo del juego
-        gameThread = new GameThread(holder, getContext());
+        gameThread = new GameThread(holder, this);
         gameThread.setRunning(true);
         gameThread.setGameSurfaceView(this); // Llamar a setGameSurfaceView después de que GameSurfaceView se haya creado
         gameThread.start();
