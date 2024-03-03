@@ -18,6 +18,9 @@ public class GameThread extends Thread{
 
     private Bitmap playerBitmap;
 
+    private Bitmap backgroundBitmap;
+
+
     public void togglePause() {
         isPaused = !isPaused;
     }
@@ -27,6 +30,7 @@ public class GameThread extends Thread{
         surfaceHolder = holder;
         this.gameSurfaceView = gameSurfaceView;
         running = true;
+        backgroundBitmap = BitmapFactory.decodeResource(gameSurfaceView.getResources(), R.drawable.day_background);
         playerBitmap = BitmapFactory.decodeResource(gameSurfaceView.getResources(), R.drawable.bird);
     }
     public void setRunning(boolean run) {
@@ -55,6 +59,7 @@ public class GameThread extends Thread{
 
     private void drawGame(Canvas canvas) {
         canvas.drawColor(Color.BLACK); // Fondo negro
+        canvas.drawBitmap(backgroundBitmap, 0, 0, null); // Dibujar la imagen de fondo
         player.draw(canvas); // Dibujar al jugador
     }
 
@@ -63,7 +68,11 @@ public class GameThread extends Thread{
 
         // Inicializar square y player después de que gameSurfaceView se haya configurado
         if (gameSurfaceView != null) {
-            player = new Player(playerBitmap, gameSurfaceView.getWidth() / 5, gameSurfaceView.getHeight() / 2, -25.0f, 0.0f, 10.0f);
+            player = new Player(playerBitmap, gameSurfaceView.getWidth() / 7, gameSurfaceView.getHeight() / 2, -15.0f, 0.0f, 10.0f);
+
+            // Ajustar el tamaño de la imagen de fondo para que ocupe toda la pantalla
+            backgroundBitmap = Bitmap.createScaledBitmap(backgroundBitmap, gameSurfaceView.getWidth(), gameSurfaceView.getHeight(), true);
+
         }
     }
 
