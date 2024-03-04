@@ -7,6 +7,9 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.view.SurfaceHolder;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class GameThread extends Thread{
 
     private GameSurfaceView gameSurfaceView;
@@ -20,6 +23,15 @@ public class GameThread extends Thread{
 
     private Bitmap backgroundBitmap;
 
+    private List<Pipe> pipes;
+
+    private Bitmap topPipeBitmap;
+    private Bitmap bottomPipeBitmap;
+
+    private int lives = 4;
+
+    private int gapBetweenPipes;
+
 
     public void togglePause() {
         isPaused = !isPaused;
@@ -32,6 +44,15 @@ public class GameThread extends Thread{
         running = true;
         backgroundBitmap = BitmapFactory.decodeResource(gameSurfaceView.getResources(), R.drawable.day_background);
         playerBitmap = BitmapFactory.decodeResource(gameSurfaceView.getResources(), R.drawable.bird);
+
+        gapBetweenPipes = gameSurfaceView.getHeight() / 8;
+
+        // Crear instancias de tuberías
+        pipes = new ArrayList<>();
+        topPipeBitmap = BitmapFactory.decodeResource(gameSurfaceView.getResources(), R.drawable.top_pipe);
+        bottomPipeBitmap = BitmapFactory.decodeResource(gameSurfaceView.getResources(), R.drawable.bottom_pipe);
+        pipes.add(new Pipe(topPipeBitmap, bottomPipeBitmap, 0, gapBetweenPipes, 10.0f));
+
     }
     public void setRunning(boolean run) {
         running = run;
@@ -61,6 +82,10 @@ public class GameThread extends Thread{
         canvas.drawColor(Color.BLACK); // Fondo negro
         canvas.drawBitmap(backgroundBitmap, 0, 0, null); // Dibujar la imagen de fondo
         player.draw(canvas); // Dibujar al jugador
+
+        for (Pipe pipe : pipes) {
+            pipe.draw(canvas);
+        }
     }
 
     public void setGameSurfaceView(GameSurfaceView gameSurfaceView) {
@@ -80,6 +105,14 @@ public class GameThread extends Thread{
         // Llamada al método update de Player para actualizar su estado
         player.update(gameSurfaceView.getIsTouching());
         // Otras actualizaciones del juego, como la lógica de colisión, actualización de objetos, etc.
+
+        for (Pipe pipe : pipes) {
+            pipe.update(gameSurfaceView.getWidth());
+            if (player.getX() + playerBitmap.getWidth() > pipe.getX() && player.getX() < pipe.getX() + topPipeBitmap.getWidth() &&
+                    (player.getY() < pipe.getY() || player.getY() + playerBitmap.getHeight() > pipe.getY() + gapBetweenPipes)) {
+                restartGame();
+            }
+        }
 
         if (player.getY() >= gameSurfaceView.getHeight() - playerBitmap.getHeight()) {
             // Reiniciar el juego
