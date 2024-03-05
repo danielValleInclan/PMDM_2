@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.SurfaceHolder;
 
 import java.util.ArrayList;
@@ -45,6 +46,8 @@ public class GameThread extends Thread{
         playerBitmap = BitmapFactory.decodeResource(gameSurfaceView.getResources(), R.drawable.bird);
 
         gapBetweenPipes = gameSurfaceView.getHeight() / 5;
+
+        Log.d("PipeDetails", "Tamaño del gap: " + gapBetweenPipes);
 
         // Crear instancias de tuberías
         pipes = new ArrayList<>();
@@ -107,8 +110,8 @@ public class GameThread extends Thread{
 
         for (Pipe pipe : pipes) {
             pipe.update(gameSurfaceView.getWidth());
-            if (player.getX() + playerBitmap.getWidth() > pipe.getX() && player.getX() < pipe.getX() + topPipeBitmap.getWidth() &&
-                    (player.getY() < pipe.getY() || player.getY() + playerBitmap.getHeight() > pipe.getY() + gapBetweenPipes)) {
+            if (player.getX() + playerBitmap.getWidth() > pipe.getX() && player.getX() < pipe.getX() + bottomPipeBitmap.getWidth() &&
+                    player.getY() + playerBitmap.getHeight() > pipe.getY() + 400) {
                 playerDie();
             }
         }
