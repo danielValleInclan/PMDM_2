@@ -1,6 +1,5 @@
 package com.example.flappybird;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -45,7 +44,7 @@ public class GameThread extends Thread{
         backgroundBitmap = BitmapFactory.decodeResource(gameSurfaceView.getResources(), R.drawable.day_background);
         playerBitmap = BitmapFactory.decodeResource(gameSurfaceView.getResources(), R.drawable.bird);
 
-        gapBetweenPipes = gameSurfaceView.getHeight() / 8;
+        gapBetweenPipes = gameSurfaceView.getHeight() / 5;
 
         // Crear instancias de tuberías
         pipes = new ArrayList<>();
@@ -110,17 +109,17 @@ public class GameThread extends Thread{
             pipe.update(gameSurfaceView.getWidth());
             if (player.getX() + playerBitmap.getWidth() > pipe.getX() && player.getX() < pipe.getX() + topPipeBitmap.getWidth() &&
                     (player.getY() < pipe.getY() || player.getY() + playerBitmap.getHeight() > pipe.getY() + gapBetweenPipes)) {
-                restartGame();
+                playerDie();
             }
         }
 
         if (player.getY() >= gameSurfaceView.getHeight() - playerBitmap.getHeight()) {
             // Reiniciar el juego
-            restartGame();
+            playerDie();
         }
     }
 
-    public void restartGame() {
+    public void playerDie() {
         player.setY(gameSurfaceView.getHeight() / 2); // Restablecer las propiedades del jugador
         player.setX(gameSurfaceView.getWidth() / 5);
         // Otras reinicializaciones de variables de juego necesarias
