@@ -114,6 +114,11 @@ public class GameThread extends Thread{
                     player.getY() + playerBitmap.getHeight() > pipe.getY() + 400) {
                 playerDie();
             }
+            if ((player.getX() + playerBitmap.getWidth() > pipe.getX() && player.getX() < pipe.getX() + topPipeBitmap.getWidth()) &&
+                    ((player.getY() < pipe.getY() && player.getY() + playerBitmap.getHeight() > pipe.getY() - topPipeBitmap.getHeight()))) {
+                playerDie();
+            }
+
         }
 
         if (player.getY() >= gameSurfaceView.getHeight() - playerBitmap.getHeight()) {
