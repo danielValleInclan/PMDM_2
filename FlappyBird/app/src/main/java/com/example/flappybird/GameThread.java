@@ -4,11 +4,12 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.SurfaceHolder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import java.util.Timer;
 
 public class GameThread extends Thread{
 
@@ -28,10 +29,16 @@ public class GameThread extends Thread{
     private Bitmap topPipeBitmap;
     private Bitmap bottomPipeBitmap;
 
-    private int lives = 4;
+    private int lifes = 4;
 
     private int gapBetweenPipes;
 
+    Timer timer = new Timer();
+
+    Random random = new Random();
+
+    int minGap = 3;
+    int maxGap = 6;
 
     public void togglePause() {
         isPaused = !isPaused;
@@ -45,17 +52,25 @@ public class GameThread extends Thread{
         backgroundBitmap = BitmapFactory.decodeResource(gameSurfaceView.getResources(), R.drawable.day_background);
         playerBitmap = BitmapFactory.decodeResource(gameSurfaceView.getResources(), R.drawable.bird);
 
-        gapBetweenPipes = gameSurfaceView.getHeight() / 5;
-
-        Log.d("PipeDetails", "Tamaño del gap: " + gapBetweenPipes);
-
         // Crear instancias de tuberías
         pipes = new ArrayList<>();
         topPipeBitmap = BitmapFactory.decodeResource(gameSurfaceView.getResources(), R.drawable.top_pipe);
         bottomPipeBitmap = BitmapFactory.decodeResource(gameSurfaceView.getResources(), R.drawable.bottom_pipe);
-        pipes.add(new Pipe(topPipeBitmap, bottomPipeBitmap, 0, gapBetweenPipes, 10.0f));
+        int initialX = gameSurfaceView.getWidth(); // Posición inicial en el borde derecho de la pantalla
+        int gap = 500; // Separación entre las tuberías
 
+        pipes.add(new Pipe(topPipeBitmap, bottomPipeBitmap, initialX, getRandomYPosition(), 10.0f));
+        pipes.add(new Pipe(topPipeBitmap, bottomPipeBitmap, initialX + gap, getRandomYPosition(), 10.0f));
+        pipes.add(new Pipe(topPipeBitmap, bottomPipeBitmap, initialX + 2 * gap, getRandomYPosition(), 10.0f));
+        pipes.add(new Pipe(topPipeBitmap, bottomPipeBitmap, initialX + 3 * gap, getRandomYPosition(), 10.0f));
     }
+
+    private int getRandomYPosition() {
+        int minGap = 100; // Altura mínima de la separación entre las tuberías
+        int maxGap = gameSurfaceView.getHeight() - 2 * minGap; // Altura máxima de la separación entre las tuberías
+        return  (random.nextInt(maxGap - minGap + 1) + minGap);
+    }
+
     public void setRunning(boolean run) {
         running = run;
     }
@@ -131,6 +146,7 @@ public class GameThread extends Thread{
         player.setY(gameSurfaceView.getHeight() / 2); // Restablecer las propiedades del jugador
         player.setX(gameSurfaceView.getWidth() / 5);
         // Otras reinicializaciones de variables de juego necesarias
+        lifes--;
     }
 
 
