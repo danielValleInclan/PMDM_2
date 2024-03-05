@@ -33,7 +33,7 @@ public class Pipe {
         // Dibujar la parte superior de la tubería
         canvas.drawBitmap(topPipeBitmap, x, y - topPipeBitmap.getHeight(), null);
         // Dibujar la parte inferior de la tubería
-        canvas.drawBitmap(bottomPipeBitmap, x, y + 600 , null);
+        canvas.drawBitmap(bottomPipeBitmap, x, y + 300 , null);
     }
 
     public float getX() {
