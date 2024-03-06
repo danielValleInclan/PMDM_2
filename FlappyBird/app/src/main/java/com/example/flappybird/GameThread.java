@@ -58,6 +58,7 @@ public class GameThread extends Thread{
     private int comboPassed = 0;
 
     private MediaPlayer mediaPlayer;
+    private MediaPlayer crashSound;
 
     public void togglePause() {
         if (isPaused){
@@ -91,6 +92,17 @@ public class GameThread extends Thread{
 
         // Inicializar el objeto MediaPlayer con el archivo de música
         mediaPlayer = MediaPlayer.create(gameSurfaceView.getContext(), R.raw.background_music);
+        mediaPlayer.setLooping(true);
+        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                // La música ha terminado, volver a empezar
+                mediaPlayer.seekTo(0);
+                mediaPlayer.start();
+            }
+        });
+
+        crashSound = MediaPlayer.create(gameSurfaceView.getContext(), R.raw.crash_sound);
     }
 
     private int getRandomYPosition() {
@@ -238,6 +250,9 @@ public class GameThread extends Thread{
         if (lifes < 1){
             running = false;
         }
+
+        // Reproducir sonido de choque
+        crashSound.start();
     }
     // Detener la música cuando la instancia de GameThread se detenga
     @Override
@@ -246,6 +261,9 @@ public class GameThread extends Thread{
         if (mediaPlayer != null) {
             mediaPlayer.stop();
             mediaPlayer.release();
+        }
+        if (crashSound != null) {
+            crashSound.release();
         }
     }
 
