@@ -171,6 +171,12 @@ public class GameThread extends Thread{
             Pipe pipe = iterator.next();
             pipe.update(gameSurfaceView.getWidth());
 
+            // Verificar si el jugador ha pasado la tubería
+            if (pipe.getX() + topPipeBitmap.getWidth() < player.getX() && !pipe.isPassed()) {
+                pipe.setPassed(true); // Marcar la tubería como pasada
+                record += 10; // Incrementar la puntuación en 10
+            }
+
             if (player.getX() + playerBitmap.getWidth() > pipe.getX() && player.getX() < pipe.getX() + bottomPipeBitmap.getWidth() &&
                     player.getY() + playerBitmap.getHeight() > pipe.getY() + 400) {
                 playerDie();

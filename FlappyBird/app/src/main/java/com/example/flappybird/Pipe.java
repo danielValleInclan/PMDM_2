@@ -9,6 +9,8 @@ public class Pipe {
     private Bitmap topPipeBitmap;
     private Bitmap bottomPipeBitmap;
 
+    private boolean passed = false;
+
     public Pipe(Bitmap topPipeBitmap, Bitmap bottomPipeBitmap, float initialX, float initialY, float speed) {
         this.topPipeBitmap = topPipeBitmap;
         this.bottomPipeBitmap = bottomPipeBitmap;
@@ -26,6 +28,8 @@ public class Pipe {
         if (x + topPipeBitmap.getWidth() < 0) {
             // Reiniciar la posición de la tubería al lado derecho de la pantalla
             x = width;
+            // Reiniciar passed
+            passed = false;
         }
     }
 
@@ -52,4 +56,11 @@ public class Pipe {
         this.x = x;
     }
 
+    public boolean isPassed() {
+        return passed;
+    }
+
+    public void setPassed(boolean b) {
+        this.passed = b;
+    }
 }
