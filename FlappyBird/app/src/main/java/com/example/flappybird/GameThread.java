@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.view.SurfaceHolder;
 
 import java.util.ArrayList;
@@ -126,21 +127,29 @@ public class GameThread extends Thread{
             pipe.draw(canvas);
         }
 
-        // Pintar el texto con las vidas restantes
+        // Pintar el texto con la puntiación
         Paint paint = new Paint();
         paint.setColor(Color.BLACK);
         paint.setTextSize(50); // Tamaño del texto
+        paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD)); // Tipo de fuente en negrita
+        paint.setShadowLayer(5, 5, 5, Color.GRAY); // Añadir sombra al texto
+        paint.setUnderlineText(true); // Subrayar el texto
+        paint.setFakeBoldText(true); // Hacer que el texto parezca más grueso
+        paint.setTextSkewX(-0.25f); // Inclinar el texto hacia la izquierda
+        paint.setAntiAlias(true); // Suavizar los bordes del texto
+
         String livesText = "Puntuacion: " + record;
         // Obtener el ancho y la altura del texto
         float textWidth = paint.measureText(livesText);
         Paint.FontMetrics fm = paint.getFontMetrics();
         float textHeight = fm.descent - fm.ascent;
-        canvas.drawText(livesText, canvas.getWidth() - textWidth - 50, textHeight + 50, paint); // Dibujar el texto en la posición (50, 50)
+        canvas.drawText(livesText, canvas.getWidth() - textWidth - 50, textHeight + 20, paint); // Dibujar el texto
+
 
         canvas.drawBitmap(pauseBitmap, 20, 20, null); // dibujar pause
 
         // Dibujar imágenes de vida
-        float startX = canvas.getWidth() / 2; // Posición inicial para dibujar las imágenes de vida
+        float startX = canvas.getWidth() / 2.5f; // Posición inicial para dibujar las imágenes de vida
         float startY = 20; // Altura fija para dibujar las imágenes de vida
 
         // Dibujar una imagen de vida por cada vida restante
