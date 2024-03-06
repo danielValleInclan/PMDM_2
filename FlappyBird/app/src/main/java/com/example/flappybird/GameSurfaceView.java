@@ -1,6 +1,8 @@
 package com.example.flappybird;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -10,6 +12,8 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+
+import androidx.appcompat.app.AlertDialog;
 
 public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callback {
     private GameThread gameThread;
@@ -67,6 +71,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             case MotionEvent.ACTION_DOWN:
                 if (touchX < pauseBitmap.getWidth() && touchY < pauseBitmap.getHeight()) {
                     gameThread.togglePause(); // Llamar al método togglePause() de GameThread
+                    showPauseDialog(); // Mostrar el diálogo de paus
                 }
                 isTouching = true;
                 break;
@@ -75,5 +80,29 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                 break;
         }
         return true;
+    }
+
+    private void showPauseDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Juego pausado");
+        builder.setMessage("¿Desea reanudar el juego o salir?");
+        builder.setPositiveButton("Reanudar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                gameThread.togglePause(); // Reanudar el hilo del juego
+            }
+        });
+        builder.setNegativeButton("Salir", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // Finalizar la actividad actual o salir del juego
+                // Por ejemplo:
+                ((Activity) getContext()).finish(); // Finalizar la actividad actual
+                System.exit(0); // Salir del juego
+            }
+        });
+        builder.setCancelable(false); // Evitar que se pueda cerrar el diálogo tocando fuera de él
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }
