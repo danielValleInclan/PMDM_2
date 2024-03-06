@@ -53,6 +53,8 @@ public class GameThread extends Thread{
 
     private float speedPipe = 6.0f;
 
+    private int comboPassed = 0;
+
     public void togglePause() {
         if (isPaused){
             isPaused = false;
@@ -85,7 +87,7 @@ public class GameThread extends Thread{
     }
 
     private int getRandomYPosition() {
-        int minGap = 100; // Altura mínima de la separación entre las tuberías
+        int minGap = 200; // Altura mínima de la separación entre las tuberías
         int maxGap = gameSurfaceView.getHeight() - 2 * minGap; // Altura máxima de la separación entre las tuberías
         return  (random.nextInt(maxGap - minGap + 1) + minGap);
     }
@@ -175,6 +177,11 @@ public class GameThread extends Thread{
             if (pipe.getX() + topPipeBitmap.getWidth() < player.getX() && !pipe.isPassed()) {
                 pipe.setPassed(true); // Marcar la tubería como pasada
                 record += 10; // Incrementar la puntuación en 10
+                comboPassed += 1;
+                if (comboPassed == 3 && lifes < 4){
+                    lifes += 1;
+                    comboPassed = 0;
+                }
             }
 
             if (player.getX() + playerBitmap.getWidth() > pipe.getX() && player.getX() < pipe.getX() + bottomPipeBitmap.getWidth() &&
