@@ -47,6 +47,8 @@ public class GameThread extends Thread{
     private int initialX;
     private int gap;
 
+    private int record = 0;
+
     public void togglePause() {
         if (isPaused){
             isPaused = false;
@@ -120,7 +122,7 @@ public class GameThread extends Thread{
         Paint paint = new Paint();
         paint.setColor(Color.WHITE);
         paint.setTextSize(50); // Tamaño del texto
-        String livesText = "Vidas: " + lifes;
+        String livesText = "Vidas: " + lifes + "Puntuacion: " + record;
         // Obtener el ancho y la altura del texto
         float textWidth = paint.measureText(livesText);
         Paint.FontMetrics fm = paint.getFontMetrics();
