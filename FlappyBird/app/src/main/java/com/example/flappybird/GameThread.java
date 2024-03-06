@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.media.MediaPlayer;
 import android.view.SurfaceHolder;
 
 import java.util.ArrayList;
@@ -56,6 +57,8 @@ public class GameThread extends Thread{
 
     private int comboPassed = 0;
 
+    private MediaPlayer mediaPlayer;
+
     public void togglePause() {
         if (isPaused){
             isPaused = false;
@@ -85,6 +88,9 @@ public class GameThread extends Thread{
         pipes.add(new Pipe(topPipeBitmap, bottomPipeBitmap, initialX + gap, getRandomYPosition(), speedPipe));
         pipes.add(new Pipe(topPipeBitmap, bottomPipeBitmap, initialX + 2 * gap, getRandomYPosition(), speedPipe));
         pipes.add(new Pipe(topPipeBitmap, bottomPipeBitmap, initialX + 3 * gap, getRandomYPosition(), speedPipe));
+
+        // Inicializar el objeto MediaPlayer con el archivo de música
+        mediaPlayer = MediaPlayer.create(gameSurfaceView.getContext(), R.raw.background_music);
     }
 
     private int getRandomYPosition() {
@@ -99,6 +105,8 @@ public class GameThread extends Thread{
 
     @Override
     public void run() {
+        // Reproducir la música
+        mediaPlayer.start();
         while (running) {
             Canvas canvas = null;
             try {
@@ -187,7 +195,7 @@ public class GameThread extends Thread{
                 pipe.setPassed(true); // Marcar la tubería como pasada
                 record += 10; // Incrementar la puntuación en 10
                 comboPassed += 1;
-                if (comboPassed == 3 && lifes < 4){
+                if (comboPassed == 3 && lifes < 4){ // Aumentar vidas al puntuar 3 veces
                     lifes += 1;
                     comboPassed = 0;
                 }
@@ -231,6 +239,14 @@ public class GameThread extends Thread{
             running = false;
         }
     }
-
+    // Detener la música cuando la instancia de GameThread se detenga
+    @Override
+    public void interrupt() {
+        super.interrupt();
+        if (mediaPlayer != null) {
+            mediaPlayer.stop();
+            mediaPlayer.release();
+        }
+    }
 
 }
