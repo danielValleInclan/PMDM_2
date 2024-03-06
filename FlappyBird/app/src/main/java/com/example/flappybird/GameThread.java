@@ -126,9 +126,9 @@ public class GameThread extends Thread{
 
         // Pintar el texto con las vidas restantes
         Paint paint = new Paint();
-        paint.setColor(Color.WHITE);
+        paint.setColor(Color.BLACK);
         paint.setTextSize(50); // Tamaño del texto
-        String livesText = "Vidas: " + lifes + "Puntuacion: " + record;
+        String livesText = "Puntuacion: " + record;
         // Obtener el ancho y la altura del texto
         float textWidth = paint.measureText(livesText);
         Paint.FontMetrics fm = paint.getFontMetrics();
