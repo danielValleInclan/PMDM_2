@@ -16,6 +16,8 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     private boolean isTouching = false;
 
+    private Bitmap pauseBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.pause);
+
 
     public Boolean getIsTouching() {
         return this.isTouching;
@@ -59,8 +61,13 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        int touchX = (int) event.getX();
+        int touchY = (int) event.getY();
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
+                if (touchX < pauseBitmap.getWidth() && touchY < pauseBitmap.getHeight()) {
+                    gameThread.togglePause(); // Llamar al método togglePause() de GameThread
+                }
                 isTouching = true;
                 break;
             case MotionEvent.ACTION_UP:

@@ -40,6 +40,9 @@ public class GameThread extends Thread{
     int minGap = 3;
     int maxGap = 6;
 
+    private int initialX;
+    private int gap;
+
     public void togglePause() {
         isPaused = !isPaused;
     }
@@ -56,13 +59,13 @@ public class GameThread extends Thread{
         pipes = new ArrayList<>();
         topPipeBitmap = BitmapFactory.decodeResource(gameSurfaceView.getResources(), R.drawable.top_pipe);
         bottomPipeBitmap = BitmapFactory.decodeResource(gameSurfaceView.getResources(), R.drawable.bottom_pipe);
-        int initialX = gameSurfaceView.getWidth(); // Posición inicial en el borde derecho de la pantalla
-        int gap = 500; // Separación entre las tuberías
+        initialX = gameSurfaceView.getWidth(); // Posición inicial en el borde derecho de la pantalla
+        gap = 500; // Separación entre las tuberías
 
-        pipes.add(new Pipe(topPipeBitmap, bottomPipeBitmap, initialX, getRandomYPosition(), 10.0f));
-        pipes.add(new Pipe(topPipeBitmap, bottomPipeBitmap, initialX + gap, getRandomYPosition(), 10.0f));
-        pipes.add(new Pipe(topPipeBitmap, bottomPipeBitmap, initialX + 2 * gap, getRandomYPosition(), 10.0f));
-        pipes.add(new Pipe(topPipeBitmap, bottomPipeBitmap, initialX + 3 * gap, getRandomYPosition(), 10.0f));
+        pipes.add(new Pipe(topPipeBitmap, bottomPipeBitmap, initialX, getRandomYPosition(), 8.0f));
+        pipes.add(new Pipe(topPipeBitmap, bottomPipeBitmap, initialX + gap, getRandomYPosition(), 8.0f));
+        pipes.add(new Pipe(topPipeBitmap, bottomPipeBitmap, initialX + 2 * gap, getRandomYPosition(), 8.0f));
+        pipes.add(new Pipe(topPipeBitmap, bottomPipeBitmap, initialX + 3 * gap, getRandomYPosition(), 8.0f));
     }
 
     private int getRandomYPosition() {
@@ -146,6 +149,15 @@ public class GameThread extends Thread{
         player.setY(gameSurfaceView.getHeight() / 2); // Restablecer las propiedades del jugador
         player.setX(gameSurfaceView.getWidth() / 5);
         // Otras reinicializaciones de variables de juego necesarias
+
+        // reinicio de tuberías
+
+        pipes.clear();
+
+        pipes.add(new Pipe(topPipeBitmap, bottomPipeBitmap, initialX, getRandomYPosition(), 8.0f));
+        pipes.add(new Pipe(topPipeBitmap, bottomPipeBitmap, initialX + gap, getRandomYPosition(), 8.0f));
+        pipes.add(new Pipe(topPipeBitmap, bottomPipeBitmap, initialX + 2 * gap, getRandomYPosition(), 8.0f));
+        pipes.add(new Pipe(topPipeBitmap, bottomPipeBitmap, initialX + 3 * gap, getRandomYPosition(), 8.0f));
         lifes--;
     }
 
