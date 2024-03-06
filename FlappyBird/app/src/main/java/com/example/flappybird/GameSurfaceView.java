@@ -8,6 +8,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -21,6 +23,8 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     private boolean isTouching = false;
 
     private Bitmap pauseBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.pause);
+    private Handler mainHandler;
+
 
 
     public Boolean getIsTouching() {
@@ -31,6 +35,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     public GameSurfaceView(Context context) {
         super(context);
         getHolder().addCallback(this);
+        mainHandler = new Handler(Looper.getMainLooper());
     }
 
     @Override
@@ -104,5 +109,32 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         builder.setCancelable(false); // Evitar que se pueda cerrar el diálogo tocando fuera de él
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    public void showDeadDialog(final int record){
+        mainHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setTitle("Fin del Juego");
+                builder.setMessage("Tu puntuación es: " + record);
+                builder.setPositiveButton("Volver a Jugar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        surfaceCreated(getHolder());
+                    }
+                });
+                builder.setNegativeButton("Salir", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        ((Activity) getContext()).finish(); // Finalizar la actividad actual
+                        System.exit(0); // Salir del juego
+                    }
+                });
+                builder.setCancelable(false); // Evitar que se pueda cerrar el diálogo tocando fuera de él
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+        });
     }
 }

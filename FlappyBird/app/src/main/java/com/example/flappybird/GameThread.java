@@ -49,6 +49,8 @@ public class GameThread extends Thread{
 
     private int record = 0;
 
+    private float speedPipe = 6.0f;
+
     public void togglePause() {
         if (isPaused){
             isPaused = false;
@@ -73,10 +75,10 @@ public class GameThread extends Thread{
         initialX = gameSurfaceView.getWidth(); // Posición inicial en el borde derecho de la pantalla
         gap = 600; // Separación entre las tuberías
 
-        pipes.add(new Pipe(topPipeBitmap, bottomPipeBitmap, initialX, getRandomYPosition(), 6.0f));
-        pipes.add(new Pipe(topPipeBitmap, bottomPipeBitmap, initialX + gap, getRandomYPosition(), 6.0f));
-        pipes.add(new Pipe(topPipeBitmap, bottomPipeBitmap, initialX + 2 * gap, getRandomYPosition(), 6.0f));
-        pipes.add(new Pipe(topPipeBitmap, bottomPipeBitmap, initialX + 3 * gap, getRandomYPosition(), 6.0f));
+        pipes.add(new Pipe(topPipeBitmap, bottomPipeBitmap, initialX, getRandomYPosition(), speedPipe));
+        pipes.add(new Pipe(topPipeBitmap, bottomPipeBitmap, initialX + gap, getRandomYPosition(), speedPipe));
+        pipes.add(new Pipe(topPipeBitmap, bottomPipeBitmap, initialX + 2 * gap, getRandomYPosition(), speedPipe));
+        pipes.add(new Pipe(topPipeBitmap, bottomPipeBitmap, initialX + 3 * gap, getRandomYPosition(), speedPipe));
     }
 
     private int getRandomYPosition() {
@@ -107,6 +109,7 @@ public class GameThread extends Thread{
                 }
             }
         }
+        gameSurfaceView.showDeadDialog(record);
     }
 
     private void drawGame(Canvas canvas) {
@@ -185,10 +188,10 @@ public class GameThread extends Thread{
         // reinicio de tuberías
         pipes.clear();
 
-        pipes.add(new Pipe(topPipeBitmap, bottomPipeBitmap, initialX, getRandomYPosition(), 6.0f));
-        pipes.add(new Pipe(topPipeBitmap, bottomPipeBitmap, initialX + gap, getRandomYPosition(), 6.0f));
-        pipes.add(new Pipe(topPipeBitmap, bottomPipeBitmap, initialX + 2 * gap, getRandomYPosition(), 6.0f));
-        pipes.add(new Pipe(topPipeBitmap, bottomPipeBitmap, initialX + 3 * gap, getRandomYPosition(), 6.0f));
+        pipes.add(new Pipe(topPipeBitmap, bottomPipeBitmap, initialX, getRandomYPosition(), speedPipe));
+        pipes.add(new Pipe(topPipeBitmap, bottomPipeBitmap, initialX + gap, getRandomYPosition(), speedPipe));
+        pipes.add(new Pipe(topPipeBitmap, bottomPipeBitmap, initialX + 2 * gap, getRandomYPosition(), speedPipe));
+        pipes.add(new Pipe(topPipeBitmap, bottomPipeBitmap, initialX + 3 * gap, getRandomYPosition(), speedPipe));
         lifes = lifes -1;
         if (lifes < 1){
             running = false;
