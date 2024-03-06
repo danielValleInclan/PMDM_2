@@ -33,6 +33,8 @@ public class GameThread extends Thread{
 
     private Bitmap pauseBitmap;
 
+    private Bitmap lifeBitmap;
+
     private int lifes = 4;
 
     private int gapBetweenPipes;
@@ -67,6 +69,7 @@ public class GameThread extends Thread{
         backgroundBitmap = BitmapFactory.decodeResource(gameSurfaceView.getResources(), R.drawable.day_background);
         playerBitmap = BitmapFactory.decodeResource(gameSurfaceView.getResources(), R.drawable.bird);
         pauseBitmap = BitmapFactory.decodeResource(gameSurfaceView.getResources(), R.drawable.pause);
+        lifeBitmap = BitmapFactory.decodeResource(gameSurfaceView.getResources(), R.drawable.life);
 
         // Crear instancias de tuberías
         pipes = new ArrayList<>();
@@ -132,7 +135,16 @@ public class GameThread extends Thread{
         float textHeight = fm.descent - fm.ascent;
         canvas.drawText(livesText, canvas.getWidth() - textWidth - 50, textHeight + 50, paint); // Dibujar el texto en la posición (50, 50)
 
-        canvas.drawBitmap(pauseBitmap, 20, 20, null);
+        canvas.drawBitmap(pauseBitmap, 20, 20, null); // dibujar pause
+
+        // Dibujar imágenes de vida
+        float startX = canvas.getWidth() / 2; // Posición inicial para dibujar las imágenes de vida
+        float startY = 20; // Altura fija para dibujar las imágenes de vida
+
+        // Dibujar una imagen de vida por cada vida restante
+        for (int i = 0; i < lifes; i++) {
+            canvas.drawBitmap(lifeBitmap, startX + (i * lifeBitmap.getWidth() * 1.2f), startY, null);
+        }
 
     }
 
